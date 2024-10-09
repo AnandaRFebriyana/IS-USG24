@@ -22,7 +22,7 @@ class MyTextField extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: const Color.fromARGB(255, 241, 241, 241)!),
+          bottom: BorderSide(color: const Color.fromARGB(255, 241, 241, 241)),
         ),
       ),
       child: TextField(
