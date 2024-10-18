@@ -23,25 +23,21 @@ class _MenuNavState extends State<MenuNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Panggil Drawer yang sudah kamu buat
-      drawer: MyDrawer(),
+      drawer: MyDrawer(onSelect: _selectDrawerItem), // Panggil Drawer dengan fungsi onSelect
 
-      // Isi body dari halaman saat ini (Home/Profile)
       body: currentScreen,
 
-      // FloatingActionButton di tengah untuk scanner
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.qr_code_scanner),
-        backgroundColor: Color(0xFF1E3B57),
+        backgroundColor: Color(0xFF697565),
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(40.0),
+          borderRadius: BorderRadius.circular(80.0),
         ),
         onPressed: () => Get.toNamed('scanner'), // Navigasi ke halaman scanner
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-      // Bottom Navigation Bar
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20.0),
@@ -54,11 +50,11 @@ class _MenuNavState extends State<MenuNav> {
           child: Container(
             height: 60,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center, // Mengubah alignment
               children: <Widget>[
                 // Tab untuk Home
                 _buildTabItem(0, Icons.home, 'Home'),
-                SizedBox(width: 40), // Spacer untuk tombol scanner di tengah
+                SizedBox(width: 180), // Spacer untuk tombol scanner di tengah
                 // Tab untuk Profile
                 _buildTabItem(1, Icons.person, 'Profile'),
               ],
@@ -78,14 +74,14 @@ class _MenuNavState extends State<MenuNav> {
         children: <Widget>[
           Icon(
             icon,
-            color: currentTab == index ? Color(0xFF356899) : Color(0xFF353840),
+            color: currentTab == index ? Color(0xFF323A23) : Color(0xFF697565),
           ),
           SizedBox(height: 4),
           Text(
             text,
             style: GoogleFonts.poppins(
               fontSize: 12,
-              color: currentTab == index ? Color(0xFF356899) : Colors.grey,
+              color: currentTab == index ? Color(0xFF40563A) : Colors.grey,
             ),
           ),
         ],
@@ -99,5 +95,20 @@ class _MenuNavState extends State<MenuNav> {
       currentScreen = screens[index]; // Update halaman yang ditampilkan
       currentTab = index;             // Update tab yang aktif
     });
+  }
+
+  // Fungsi untuk menanggapi pilihan di Drawer
+  void _selectDrawerItem(String route) {
+    Navigator.of(context).pop(); // Tutup Drawer
+    if (route == 'profile') {
+      setState(() {
+        currentScreen = Profile(); // Navigasi ke Profile
+        currentTab = 1;           // Update tab aktif ke Profile
+      });
+    } else if (route == 'settings') {
+      // Navigasi ke halaman Settings jika ada
+    } else if (route == 'help') {
+      // Navigasi ke halaman Help jika ada
+    }
   }
 }
