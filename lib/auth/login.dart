@@ -17,7 +17,7 @@ class _LoginState extends State<Login> {
   bool _loginFailed = false; // Untuk mengelola status login gagal
 
   // Dummy credentials
-  final String dummyUsername = 'user123';
+  final String dummyUsername = 'nanda';
   final String dummyPassword = '123456';
 
   @override
