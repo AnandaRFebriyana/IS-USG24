@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart'; // Pastikan GetX diimpor
 
 class Home extends StatefulWidget {
   @override
@@ -120,45 +121,23 @@ class _HomeState extends State<Home> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildActionButton('Assessment Awal', Icons.assignment, Colors.blue),
-                _buildActionButton('Vital Sign', Icons.favorite, Colors.red),
-                _buildActionButton('USG', Icons.camera_alt, Colors.orange),
-                _buildActionButton('Data Domba', Icons.pets, Colors.green),
+                _buildActionButton('Assessment Awal', Icons.assignment, const Color(0xFF697565), () {
+                  // Navigasi ke halaman Assessment Awal
+                  Get.toNamed('/detaildomba'); // Ganti dengan rute yang sesuai
+                }),
+                _buildActionButton('Vital Sign', Icons.favorite, const Color(0xFF697565), () {
+                  // Navigasi ke halaman Vital Sign
+                  Get.toNamed('/vitalsign'); // Ganti dengan rute yang sesuai
+                }),
+                _buildActionButton('USG', Icons.camera_alt, const Color(0xFF697565), () {
+                  // Navigasi ke halaman USG
+                  Get.toNamed('/scanner'); // Ganti dengan rute yang sesuai
+                }),
+                _buildActionButton('Data Domba', Icons.pets, const Color(0xFF697565), () {
+                  // Navigasi ke halaman Data Domba
+                  Get.toNamed('/datadomba'); // Ganti dengan rute yang sesuai
+                }),
               ],
-            ),
-            SizedBox(height: 30),
-
-            // Edukasi Domba
-            Text(
-              'Edukasi Pemeliharaan Domba',
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Image.network(
-                  'https://example.com/image.jpg', // Gambar edukasi domba (ubah ke URL gambar asli)
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(width: 15),
-                Expanded(
-                  child: Text(
-                    'Pemeliharaan domba hamil sangat penting untuk menjaga kesehatan dan produktivitas domba. Pastikan domba diberi makan yang cukup, perawatan rutin, dan pengawasan kesehatan secara berkala.',
-                    style: GoogleFonts.poppins(fontSize: 14),
-                  ),
-                ),
-              ],
-            ),
-            // Menambahkan informasi lebih lanjut tentang edukasi dari Google
-            SizedBox(height: 10),
-            Text(
-              'Untuk informasi lebih lanjut, kunjungi situs pemeliharaan domba.',
-              style: GoogleFonts.poppins(fontSize: 12, color: Colors.black54),
             ),
           ],
         ),
@@ -167,25 +146,28 @@ class _HomeState extends State<Home> {
   }
 
   // Fungsi untuk membangun tombol aksi dengan warna yang ditentukan
-  Widget _buildActionButton(String title, IconData icon, Color color) {
-    return Column(
-      children: [
-        Container(
-          height: 60,
-          width: 60,
-          decoration: BoxDecoration(
-            color: color, // Menggunakan warna yang diteruskan
-            shape: BoxShape.circle,
+  Widget _buildActionButton(String title, IconData icon, Color color, VoidCallback onPressed) {
+    return GestureDetector(
+      onTap: onPressed, // Menambahkan aksi ketika tombol ditekan
+      child: Column(
+        children: [
+          Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              color: color, // Menggunakan warna yang diteruskan
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: Colors.white, size: 30),
           ),
-          child: Icon(icon, color: Colors.white, size: 30),
-        ),
-        SizedBox(height: 5),
-        Text(
-          title,
-          style: GoogleFonts.poppins(fontSize: 12),
-          textAlign: TextAlign.center,
-        ),
-      ],
+          SizedBox(height: 5),
+          Text(
+            title,
+            style: GoogleFonts.poppins(fontSize: 12),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 }
