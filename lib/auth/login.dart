@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobileapp/controllers/auth_controller.dart';
+import 'package:mobileapp/services/auth_service.dart';
 import '../components/button.dart';
 
 class Login extends StatefulWidget {
@@ -10,28 +12,24 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool _isObscure = true;
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
   bool _usernameNotEntered = false;
   bool _passwordNotEntered = false;
-  bool _loginFailed = false; // Untuk mengelola status login gagal
+  bool _loginFailed = false; 
 
-  // Dummy credentials
-  final String dummyUsername = 'nanda';
-  final String dummyPassword = '123456';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(20),
-        color: Colors.white, // Background warna putih
+        color: Colors.white, 
         child: Center(
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                // Row untuk WELCOME BACK text dan gambar domba
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -70,7 +68,7 @@ class _LoginState extends State<Login> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Username",
+                      "Email",
                       style: GoogleFonts.poppins(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -78,13 +76,13 @@ class _LoginState extends State<Login> {
                     ),
                     SizedBox(height: 10),
                     TextFormField(
-                      controller: usernameController,
+                      controller: email,
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (_) {
                         setState(() {
-                          _usernameNotEntered = usernameController.text.isEmpty;
+                          _usernameNotEntered = email.text.isEmpty;
                           _loginFailed = false; // Reset error jika ada perubahan
                         });
                       },
@@ -110,7 +108,7 @@ class _LoginState extends State<Login> {
                     ),
                     SizedBox(height: 10),
                     TextFormField(
-                      controller: passwordController,
+                      controller: password,
                       obscureText: _isObscure,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -127,7 +125,7 @@ class _LoginState extends State<Login> {
                       ),
                       onChanged: (_) {
                         setState(() {
-                          _passwordNotEntered = passwordController.text.isEmpty;
+                          _passwordNotEntered = password.text.isEmpty;
                           _loginFailed = false; // Reset error jika ada perubahan
                         });
                       },
@@ -150,27 +148,7 @@ class _LoginState extends State<Login> {
                 // Tombol login di tengah
                 MyButton(
                   text: "LOGIN",
-                  onPressed: () {
-                    setState(() {
-                      _usernameNotEntered = usernameController.text.isEmpty;
-                      _passwordNotEntered = passwordController.text.isEmpty;
-                    });
-
-                    // Cek jika username dan password telah diisi
-                    if (!_usernameNotEntered && !_passwordNotEntered) {
-                      // Validasi dengan data dummy
-                      if (usernameController.text == dummyUsername &&
-                          passwordController.text == dummyPassword) {
-                        // Jika cocok, navigasi ke halaman home
-                        Get.toNamed('/menu-nav');
-                      } else {
-                        // Jika tidak cocok, tampilkan error
-                        setState(() {
-                          _loginFailed = true;
-                        });
-                      }
-                    }
-                  },
+                  onPressed: () => AuthController.login(context, email, password),
                 ),
               ],
             ),
