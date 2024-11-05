@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobileapp/controllers/auth_controller.dart';
-import 'package:mobileapp/services/auth_service.dart';
-import '../components/button.dart';
+import '../../components/button.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -16,15 +14,14 @@ class _LoginState extends State<Login> {
   TextEditingController password = TextEditingController();
   bool _usernameNotEntered = false;
   bool _passwordNotEntered = false;
-  bool _loginFailed = false; 
-
+  bool _loginFailed = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(20),
-        color: Colors.white, 
+        color: Colors.white,
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -54,11 +51,11 @@ class _LoginState extends State<Login> {
                         ),
                       ],
                     ),
-                    SizedBox(width: 35), 
+                    SizedBox(width: 35),
                     Image.asset(
-                      'assets/domba.png', 
-                      width: 160, 
-                      height: 160, 
+                      'assets/domba.png',
+                      width: 160,
+                      height: 160,
                     ),
                   ],
                 ),
@@ -89,7 +86,7 @@ class _LoginState extends State<Login> {
                     ),
                     if (_usernameNotEntered)
                       Text(
-                        'Please enter your username',
+                        'Please enter your email',
                         style: TextStyle(color: Colors.red),
                       ),
                   ],
@@ -139,13 +136,12 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(height: 20),
                 // Pesan error jika login gagal
-                if (_loginFailed)
+                if (_loginFailed) 
                   Text(
                     'Invalid username or password',
                     style: TextStyle(color: Colors.red),
                   ),
                 SizedBox(height: 20),
-                // Tombol login di tengah
                 MyButton(
                   text: "LOGIN",
                   onPressed: () => AuthController.login(context, email, password),

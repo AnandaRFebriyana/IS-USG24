@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:mobileapp/models/sheep_models.dart';
 import 'package:mobileapp/services/sheep_service.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:get/get.dart';
 
 class Scanner extends StatefulWidget {
   @override

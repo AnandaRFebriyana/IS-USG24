@@ -12,7 +12,7 @@ class AuthController {
       User? user = await AuthService.login(email.text, password.text);
       if (user != null && user.token != null) {
         await Constant.saveToken(user.token!);
-        Get.toNamed('/menu-nav', arguments: user);
+        Get.toNamed('/menu-nav');
       } else {
       print("Login failed: User token is null");
       MyQuickAlert.error(context, "Login failed: No token received");

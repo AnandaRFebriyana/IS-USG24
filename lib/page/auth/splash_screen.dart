@@ -11,9 +11,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Timer untuk mengarahkan ke halaman login setelah 3 detik
-    Timer(Duration(seconds: 3), () {
-      Get.offNamed('/login'); // Menggunakan rute '/login'
+    Timer(const Duration(seconds: 3), () {
+      Get.offNamed('/login');
     });
   }
 

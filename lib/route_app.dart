@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:mobileapp/auth/login.dart';
-import 'package:mobileapp/auth/splash_screen.dart';
+import 'package:mobileapp/page/auth/login.dart';
+import 'package:mobileapp/page/auth/splash_screen.dart';
 import 'package:mobileapp/page/addSheep.dart';
 import 'package:mobileapp/page/datadomba.dart';
 import 'package:mobileapp/page/detail_domba.dart';

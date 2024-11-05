@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mobileapp/auth/splash_screen.dart';
+import 'package:mobileapp/page/auth/splash_screen.dart';
 import 'package:mobileapp/route_app.dart';
 
 void main() {

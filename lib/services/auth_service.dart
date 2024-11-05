@@ -14,7 +14,7 @@ class AuthService {
 
     if (response.statusCode == 200) {
       final result = jsonDecode(response.body);
-      return User.fromJson(result['data']);
+      return User.fromJson(result);
     } else {
       final errorResult = jsonDecode(response.body);
       throw '${errorResult['error'] ?? 'Unknown error occurred'}';
