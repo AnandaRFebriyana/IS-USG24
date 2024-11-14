@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobileapp/page/assesment_awal.dart';
 import 'package:mobileapp/page/drawer.dart';
+import 'package:mobileapp/page/usg.dart';
+import 'package:mobileapp/page/vital_sign.dart';
 import 'home.dart'; 
 import 'profile.dart'; 
 
@@ -15,7 +18,9 @@ class _MenuNavState extends State<MenuNav> {
 
   final List<Widget> screens = [
     Home(),    // Halaman Home
-    Profile(), // Halaman Profile
+    Assesment(), // Halaman Assesment Awal
+    VitalSign(),
+    USGPage()
   ];
 
   Widget currentScreen = Home(); // Default ke halaman Home
@@ -48,15 +53,19 @@ class _MenuNavState extends State<MenuNav> {
           shape: CircularNotchedRectangle(),
           notchMargin: 10,
           child: Container(
-            height: 60,
+            height: 50,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center, // Mengubah alignment
               children: <Widget>[
                 // Tab untuk Home
                 _buildTabItem(0, Icons.home, 'Home'),
-                SizedBox(width: 180), // Spacer untuk tombol scanner di tengah
+                SizedBox(width: 40),
+                _buildTabItem(1, Icons.assessment, 'Assesment'),
+                SizedBox(width: 100), // Spacer untuk tombol scanner di tengah
                 // Tab untuk Profile
-                _buildTabItem(1, Icons.person, 'Profile'),
+                _buildTabItem(2, Icons.health_and_safety, 'Vital Sign'),
+                SizedBox(width: 40),
+                _buildTabItem(3, Icons.monitor_heart, 'USG'),
               ],
             ),
           ),

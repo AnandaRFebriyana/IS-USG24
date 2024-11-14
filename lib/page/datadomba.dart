@@ -84,14 +84,13 @@ class _DataState extends State<Data> {
                             backgroundImage: AssetImage(sheep.image),
                           ),
                           title: Text(sheep.namaDomba),
-                          subtitle: Text('ID: ${sheep.idDomba}\nJenis: ${sheep.jenisDomba}\nUmur: ${sheep.umur}'),
+                          subtitle: Text('ID: ${sheep.idDomba}\nJenis: ${sheep.jenisDomba}'),
                           onTap: () {
                             // Navigasi ke halaman detail domba
                             Get.toNamed('/detaildomba', arguments: {
                               'idDomba': sheep.idDomba,
                               'namaDomba': sheep.namaDomba,
                               'tanggalLahir': sheep.tanggalLahir,
-                              'umur': sheep.umur,
                               'jenisDomba': sheep.jenisDomba,
                               'image': sheep.image,
                             });

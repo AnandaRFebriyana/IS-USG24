@@ -102,7 +102,6 @@ class _ScannerState extends State<Scanner> {
         'idDomba': sheep.idDomba,
         'namaDomba': sheep.namaDomba,
         'tanggalLahir': sheep.tanggalLahir,
-        'umur': sheep.umur,
         'jenisDomba': sheep.jenisDomba,
         });
       } catch (e) {

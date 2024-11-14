@@ -69,7 +69,6 @@ class SheepController extends GetxController {
       idDomba: idDomba,
       namaDomba: namaDomba,
       tanggalLahir: tanggalLahir,
-      umur: umur,
       jenisDomba: jenisDomba,
       image: 'assets/images/default_sheep.png', // default image
     );

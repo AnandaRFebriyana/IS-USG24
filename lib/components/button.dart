@@ -4,11 +4,13 @@ import 'package:google_fonts/google_fonts.dart';
 class MyButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
+  final IconData? icon;
 
   const MyButton({
     Key? key,
     required this.text,
     required this.onPressed,
+    this.icon,
   }) : super(key: key);
 
   @override
@@ -25,12 +27,20 @@ class MyButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: Text(
-          text,
-          style: GoogleFonts.poppins(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (icon != null) // Tampilkan ikon jika tersedia
+              Icon(icon, color: Colors.white, size: 18),
+            if (icon != null) SizedBox(width: 5),
+            Text(
+              text,
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
     );

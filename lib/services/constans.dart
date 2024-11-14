@@ -7,6 +7,9 @@ class Constant {
   static const String LOGIN_URL = '$BASE_URL/login';
   static const String LOGOUT_URL = '$BASE_URL/logout';
   static const String GET_USER_URL = '$BASE_URL/get-user';
+  static const String GET_SHEEP = '$BASE_URL/get-sheep';
+  static const String GET_SHEEPBYID = '$BASE_URL/get-sheep/1';
+  static const String POST_SHEEP = '$BASE_URL/sheep/store';
 
   static Future<void> saveToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

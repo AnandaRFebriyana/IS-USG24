@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:get/get.dart'; // Pastikan GetX diimpor
+import 'package:mobileapp/page/addSheep.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -9,60 +10,90 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String selectedTimeframe = 'Minggu'; // Default waktu untuk grafik
+  String currentDate = '';
 
-  // Data untuk grafik
-  List<SalesData> data = [
-    SalesData(1, 5),
-    SalesData(2, 25),
-    SalesData(3, 100),
-    SalesData(4, 75),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    // Set tanggal dan waktu saat ini pada saat inisialisasi
+    currentDate = DateFormat('EEEE, d MMMM yyyy').format(DateTime.now());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications, color: Colors.black),
-            onPressed: () {
-              // Aksi untuk notifikasi
-            },
-          ),
-        ],
-        // Menambahkan bagian foto dan welcome ke AppBar
-        title: Row(
-          children: [
-            CircleAvatar(
-              radius: 20, // Mengurangi ukuran agar sesuai dengan AppBar
-              backgroundImage: AssetImage('assets/domba.png'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(140), // Tinggi custom AppBar
+        child: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          flexibleSpace: ClipRRect(
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10.0),
+              bottomRight: Radius.circular(10.0),
             ),
-            SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
+              fit: StackFit.expand,
               children: [
-                Text(
-                  'Welcome Back,',
-                  style: GoogleFonts.poppins(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                  ),
+                // Background image
+                Image.asset(
+                  'assets/bg_sheep.jpg', // Ganti dengan path gambar Anda
+                  fit: BoxFit.cover,
                 ),
-                Text(
-                  'User123', // Nama user
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    color: Colors.black54,
+                // Layer untuk menambahkan efek gelap pada gambar
+                Container(
+                  color: Colors.black.withOpacity(0.3),
+                ),
+                // Konten di atas gambar
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 40),
+                      // Logo atau nama aplikasi
+                      Text(
+                        'IS-USG',
+                        style: GoogleFonts.poppins(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      // Text "Selamat Datang" dan Tanggal di bawah logo
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Selamat Datang Karyawan',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                currentDate,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 14,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
       body: Padding(
@@ -70,74 +101,82 @@ class _HomeState extends State<Home> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 10),
+            // Column untuk 2 baris kotak informasi
+            Column(
+              children: [
+                // Baris pertama dengan dua kotak
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildInfoBox('Suhu Udara', '30°C', Colors.blue.shade100, Colors.blue, Icons.thermostat),
+                    _buildInfoBox('Kelembapan', '60%', Colors.green.shade100, Colors.green, Icons.water_drop),
+                  ],
+                ),
+                SizedBox(height: 20),
+                // Baris kedua dengan dua kotak
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildInfoBox('Metana', '150 ppm', Colors.orange.shade100, Colors.orange, Icons.air),
+                    _buildInfoBox('Amonia', '20 ppm', Colors.red.shade100, Colors.red, Icons.science),
+                  ],
+                ),
+              ],
+            ),
             SizedBox(height: 20),
-
-            // Grafik Aktivitas Domba Hamil
+            // Teks "Data Domba" dengan tombol "+ Add" di sebelah kanan
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Aktivitas Domba Hamil',
+                  'Data Domba',
                   style: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
-                DropdownButton<String>(
-                  value: selectedTimeframe,
-                  items: ['Minggu', 'Bulan', 'Tahun']
-                      .map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedTimeframe = newValue!;
-                    });
+                // Tombol "+ Add"
+                TextButton.icon(
+                  onPressed: () {
+                    // Aksi saat tombol + Add ditekan, navigasi ke AddSheepForm
+                    Get.to(AddSheepForm());
                   },
+                  icon: Icon(
+                    Icons.add,
+                    size: 18,
+                    color: const Color(0xFF697565),
+                  ),
+                  label: Text(
+                    "Add",
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF697565),
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                    backgroundColor: Colors.transparent,
+                  ),
                 ),
               ],
             ),
-            SizedBox(
-              height: 300, // Ukuran grafik
-              child: SfCartesianChart(
-                primaryXAxis: CategoryAxis(),
-                series: <ChartSeries>[
-                  LineSeries<SalesData, String>(
-                    dataSource: data,
-                    xValueMapper: (SalesData sales, _) => sales.year.toString(),
-                    yValueMapper: (SalesData sales, _) => sales.sales,
-                    name: 'Sales',
-                    dataLabelSettings: DataLabelSettings(isVisible: true),
-                  )
-                ],
+            SizedBox(height: 10),
+            // Scrollable data domba
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: List.generate(20, (index) {
+                    return ListTile(
+                      leading: Icon(Icons.pets),
+                      title: Text('Domba $index'),
+                      subtitle: Text('Data detail domba $index'),
+                    );
+                  }),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-
-            // Tombol Aksi (4 tombol) dengan warna yang diperbarui
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildActionButton('Assessment Awal', Icons.assignment, const Color(0xFF697565), () {
-                  // Navigasi ke halaman Assessment Awal
-                  Get.toNamed('/detaildomba'); // Ganti dengan rute yang sesuai
-                }),
-                _buildActionButton('Vital Sign', Icons.favorite, const Color(0xFF697565), () {
-                  // Navigasi ke halaman Vital Sign
-                  Get.toNamed('/vitalsign'); // Ganti dengan rute yang sesuai
-                }),
-                _buildActionButton('USG', Icons.camera_alt, const Color(0xFF697565), () {
-                  // Navigasi ke halaman USG
-                  Get.toNamed('/scanner'); // Ganti dengan rute yang sesuai
-                }),
-                _buildActionButton('Data Domba', Icons.pets, const Color(0xFF697565), () {
-                  // Navigasi ke halaman Data Domba
-                  Get.toNamed('/datadomba'); // Ganti dengan rute yang sesuai
-                }),
-              ],
             ),
           ],
         ),
@@ -145,37 +184,43 @@ class _HomeState extends State<Home> {
     );
   }
 
-  // Fungsi untuk membangun tombol aksi dengan warna yang ditentukan
-  Widget _buildActionButton(String title, IconData icon, Color color, VoidCallback onPressed) {
-    return GestureDetector(
-      onTap: onPressed, // Menambahkan aksi ketika tombol ditekan
+  // Fungsi untuk membangun kotak informasi dengan warna judul yang bisa diatur
+  Widget _buildInfoBox(String title, String value, Color backgroundColor, Color titleColor, IconData icon) {
+    return Container(
+      width: (MediaQuery.of(context).size.width - 60) / 2, // Menyesuaikan ukuran kotak
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: backgroundColor,  // Menambahkan warna latar belakang
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            height: 60,
-            width: 60,
-            decoration: BoxDecoration(
-              color: color, // Menggunakan warna yang diteruskan
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: Colors.white, size: 30),
+          Icon(
+            icon,
+            size: 30,
+            color: titleColor,
           ),
-          SizedBox(height: 5),
           Text(
             title,
-            style: GoogleFonts.poppins(fontSize: 12),
-            textAlign: TextAlign.center,
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: titleColor, // Warna judul disesuaikan
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            value,
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
         ],
       ),
     );
   }
-}
-
-// Data model untuk grafik
-class SalesData {
-  final int year;
-  final int sales;
-
-  SalesData(this.year, this.sales);
 }
