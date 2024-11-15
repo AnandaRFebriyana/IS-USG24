@@ -1,63 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:barcode_widget/barcode_widget.dart';
-import 'package:mobileapp/controllers/sheep_controller.dart';
+import 'package:mobileapp/models/sheep_models.dart';
 
 class DetailDomba extends StatelessWidget {
-  final SheepController sheepController = Get.find<SheepController>();
+  final Sheep sheep = Get.arguments as Sheep;
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic>? arguments = Get.arguments as Map<String, dynamic>?;
-
-    if (arguments == null || arguments['idDomba'] == null) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Detail Domba'),
-        ),
-        body: Center(
-          child: Text('No data found.'),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detail Domba'),
+        title: Text(
+          'Vital Sign',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Barcode Widget
-                BarcodeWidget(
-                  barcode: Barcode.qrCode(),
-                  data: arguments['idDomba'],
-                  width: 200,
-                  height: 200,
-                ),
-                SizedBox(height: 20),
-                
-                // ID Domba
-                _buildDetailField('ID Domba', arguments['idDomba']),
-                SizedBox(height: 20),
-                
-                // Nama Domba
-                _buildDetailField('Nama Domba', arguments['namaDomba']),
-                SizedBox(height: 20),
-                
-                // Tanggal Lahir
-                _buildDetailField('Tanggal Lahir', arguments['tanggalLahir']),
-                SizedBox(height: 20),
-                
-                // Umur (dapat ditambahkan jika diperlukan)
-                _buildDetailField('Umur', arguments['umur']),
-              ],
-            ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 30),
+              BarcodeWidget(
+                barcode: Barcode.qrCode(),
+                data: sheep.id,
+                width: 200,
+                height: 200,
+              ),
+              SizedBox(height: 20),
+              _buildDetailField('ID Domba', sheep.id),
+              SizedBox(height: 20),
+              _buildDetailField('Nama Domba', sheep.sheepName),
+              SizedBox(height: 20),
+              _buildDetailField('Tanggal Lahir', sheep.sheepBirth),
+              SizedBox(height: 20),
+              _buildDetailField('Jenis Kelamin', sheep.sheepGender),
+              Spacer(),
+            ],
           ),
         ),
       ),
@@ -74,10 +60,10 @@ class DetailDomba extends StatelessWidget {
         ),
         TextField(
           controller: TextEditingController(text: value),
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             border: OutlineInputBorder(),
           ),
-          readOnly: true, // Menjadikan field tidak dapat diedit
+          readOnly: true,
         ),
       ],
     );

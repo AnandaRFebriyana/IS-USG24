@@ -80,7 +80,8 @@ class _HomeState extends State<Home> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Selamat Datang ${user.name}',
+                              Text(
+                                'Selamat Datang ${user.name}',
                                 style: GoogleFonts.poppins(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -171,6 +172,8 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
+            //
+
             Expanded(
               child: FutureBuilder<List<Sheep>>(
                 future: SheepService.getSheep(),
@@ -188,6 +191,9 @@ class _HomeState extends State<Home> {
                             leading: Icon(Icons.pets),
                             title: Text(sheep.id),
                             subtitle: Text(sheep.sheepName),
+                            onTap: () {
+                              Get.toNamed('/detaildomba', arguments: sheep);
+                            },
                           );
                         }).toList(),
                       ),
