@@ -99,10 +99,10 @@ class _ScannerState extends State<Scanner> {
         Sheep sheep = await sheepService.fetchSheepById(barcode.code!);
         Get.toNamed('/detaildomba', arguments: {
           // 'idDomba' : barcode.code,
-        'idDomba': sheep.idDomba,
-        'namaDomba': sheep.namaDomba,
-        'tanggalLahir': sheep.tanggalLahir,
-        'jenisDomba': sheep.jenisDomba,
+        'idDomba': sheep.id,
+        'namaDomba': sheep.sheepName,
+        'tanggalLahir': sheep.sheepBirth,
+        'jenisDomba': sheep.sheepGender,
         });
       } catch (e) {
         print('Error fetching sheep data: $e');

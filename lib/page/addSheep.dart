@@ -15,7 +15,6 @@ class _AddSheepFormState extends State<AddSheepForm> {
   final TextEditingController idDombaController = TextEditingController();
   final TextEditingController namaDombaController = TextEditingController();
   final TextEditingController tanggalLahirController = TextEditingController();
-  final TextEditingController umurController = TextEditingController();
   final TextEditingController jenisDombaController = TextEditingController();
 
   final SheepController sheepController = Get.find<SheepController>();
@@ -81,14 +80,6 @@ class _AddSheepFormState extends State<AddSheepForm> {
                 isObscure: false,
               ),
               SizedBox(height: 16),
-              // Input Umur Domba
-              MyTextField(
-                controller: umurController,
-                labelText: 'Umur Domba',
-                isPassword: false,
-                isObscure: false,
-              ),
-              SizedBox(height: 16),
               // Input Jenis Domba
               MyTextField(
                 controller: jenisDombaController,
@@ -106,10 +97,9 @@ class _AddSheepFormState extends State<AddSheepForm> {
                       idDombaController.text,
                       namaDombaController.text,
                       tanggalLahirController.text,
-                      umurController.text,
                       jenisDombaController.text,
                     );
-                    Get.back(); // Kembali setelah menambah domba
+                    Get.back();
                   }
                 },
               ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobileapp/controllers/sheep_controller.dart';
-import 'package:mobileapp/page/auth/splash_screen.dart';
+import 'package:mobileapp/page/splash_screen.dart';
 import 'package:mobileapp/route_app.dart';
 
 void main() {
@@ -21,9 +21,9 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: SplashScreen(), // Set SplashScreen sebagai layar awal
+      home: SplashScreen(),
       defaultTransition: Transition.rightToLeft,
-      getPages: RouteApp.pages, // Daftar rute Get
+      getPages: RouteApp.pages,
     );
   }
 }

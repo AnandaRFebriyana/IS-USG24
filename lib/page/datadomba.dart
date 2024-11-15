@@ -51,7 +51,7 @@ class _DataState extends State<Data> {
             child: TextField(
               controller: searchController,
               onChanged: (value) {
-                sheepController.filterSheep(value);
+                // sheepController.filterSheep(value);
               },
               decoration: InputDecoration(
                 labelText: "Search",
@@ -65,44 +65,44 @@ class _DataState extends State<Data> {
               ),
             ),
           ),
-          Expanded(
-            child: Obx(() {
-              if (sheepController.sheepList.isEmpty) {
-                return Center(child: CircularProgressIndicator());
-              } else {
-                return RefreshIndicator(
-                  onRefresh: sheepController.fetchSheep,
-                  child: ListView.builder(
-                    itemCount: sheepController.filteredList.length,
-                    itemBuilder: (context, index) {
-                      var sheep = sheepController.filteredList[index];
-                      return Card(
-                        elevation: 1,
-                        color: Color.fromARGB(255, 252, 254, 255),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage(sheep.image),
-                          ),
-                          title: Text(sheep.namaDomba),
-                          subtitle: Text('ID: ${sheep.idDomba}\nJenis: ${sheep.jenisDomba}'),
-                          onTap: () {
-                            // Navigasi ke halaman detail domba
-                            Get.toNamed('/detaildomba', arguments: {
-                              'idDomba': sheep.idDomba,
-                              'namaDomba': sheep.namaDomba,
-                              'tanggalLahir': sheep.tanggalLahir,
-                              'jenisDomba': sheep.jenisDomba,
-                              'image': sheep.image,
-                            });
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                );
-              }
-            }),
-          ),
+          // Expanded(
+            // child: Obx(() {
+            //   if (sheepController.sheepList.isEmpty) {
+            //     return Center(child: CircularProgressIndicator());
+            //   } else {
+            //     return RefreshIndicator(
+            //       onRefresh: sheepController.fetchSheep,
+            //       child: ListView.builder(
+            //         itemCount: sheepController.filteredList.length,
+            //         itemBuilder: (context, index) {
+            //           var sheep = sheepController.filteredList[index];
+            //           return Card(
+            //             elevation: 1,
+            //             color: Color.fromARGB(255, 252, 254, 255),
+            //             child: ListTile(
+            //               leading: CircleAvatar(
+            //                 backgroundImage: AssetImage(sheep.image),
+            //               ),
+            //               title: Text(sheep.namaDomba),
+            //               subtitle: Text('ID: ${sheep.idDomba}\nJenis: ${sheep.jenisDomba}'),
+            //               onTap: () {
+            //                 // Navigasi ke halaman detail domba
+            //                 Get.toNamed('/detaildomba', arguments: {
+            //                   'idDomba': sheep.idDomba,
+            //                   'namaDomba': sheep.namaDomba,
+            //                   'tanggalLahir': sheep.tanggalLahir,
+            //                   'jenisDomba': sheep.jenisDomba,
+            //                   'image': sheep.image,
+            //                 });
+            //               },
+            //             ),
+            //           );
+            //         },
+            //       ),
+            //     );
+            //   }
+            // }),
+          // ),
         ],
       ),
     );

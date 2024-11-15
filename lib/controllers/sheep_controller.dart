@@ -52,25 +52,17 @@ class SheepController extends GetxController {
 
   @override
   void onInit() {
-    fetchSheep();
     super.onInit();
   }
 
-  // Fetching data domba (dummy)
-  Future<void> fetchSheep() async {
-    var sheepData = await SheepService().fetchSheep();
-    sheepList.assignAll(sheepData);
-    filteredList.assignAll(sheepData);
-  }
-
   // Menambahkan domba baru
-  void addSheep(String idDomba, String namaDomba, String tanggalLahir, String umur, String jenisDomba) {
+  void addSheep(String id, String sheepName, String sheepBirth, String sheepGender) {
     var newSheep = Sheep(
-      idDomba: idDomba,
-      namaDomba: namaDomba,
-      tanggalLahir: tanggalLahir,
-      jenisDomba: jenisDomba,
-      image: 'assets/images/default_sheep.png', // default image
+      id: id,
+      sheepName: sheepName,
+      sheepBirth: sheepBirth,
+      sheepGender: sheepGender,
+      sheepPhoto: 'assets/images/default_sheep.png',
     );
 
     sheepList.add(newSheep);
@@ -83,7 +75,7 @@ class SheepController extends GetxController {
       filteredList.assignAll(sheepList);
     } else {
       filteredList.assignAll(
-        sheepList.where((sheep) => sheep.idDomba.toLowerCase().contains(query.toLowerCase())).toList(),
+        sheepList.where((sheep) => sheep.id.toLowerCase().contains(query.toLowerCase())).toList(),
       );
     }
   }

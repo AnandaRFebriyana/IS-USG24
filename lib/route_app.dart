@@ -1,18 +1,16 @@
 import 'package:get/get.dart';
 import 'package:mobileapp/page/assesment_awal.dart';
-import 'package:mobileapp/page/auth/login.dart';
-import 'package:mobileapp/page/auth/splash_screen.dart';
+import 'package:mobileapp/page/login.dart';
+import 'package:mobileapp/page/splash_screen.dart';
 import 'package:mobileapp/page/addSheep.dart';
 import 'package:mobileapp/page/datadomba.dart';
 import 'package:mobileapp/page/detail_assesment.dart';
 import 'package:mobileapp/page/detail_domba.dart';
-//import 'package:mobileapp/page/detail_vitalsign.dart';
 import 'package:mobileapp/page/home.dart';
 import 'package:mobileapp/page/menu_nav.dart';
 import 'package:mobileapp/page/scanner.dart';
 import 'package:mobileapp/page/usg.dart';
 import 'package:mobileapp/page/vital_sign.dart';
-//import 'package:mobileapp/page/vitalsign.dart';
 
 class RouteApp {
   static final pages = [

@@ -5,7 +5,7 @@ import 'package:mobileapp/services/constans.dart';
 
 class AuthService {
   static Future<User?> login(String email, String password) async {
-    final url = Uri.parse(Constant.LOGIN_URL);
+    final url = Uri.parse(Constant.LOGIN);
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -22,7 +22,7 @@ class AuthService {
   }
 
   static Future<void> logout() async {
-    final url = Uri.parse(Constant.LOGOUT_URL);
+    final url = Uri.parse(Constant.LOGOUT);
     String? token = await Constant.getToken();
     final response = await http.post(
       url,
@@ -41,14 +41,14 @@ class AuthService {
 
   static Future<User> getUser() async {
     String? token = await Constant.getToken();
-    final url = Uri.parse(Constant.GET_USER_URL);
+    final url = Uri.parse(Constant.GET_USER);
     final response = await http.get(
       url,
-      headers: {'Authorization': '$token'},
+      headers: {'Authorization': 'Bearer $token'},
     );
     if (response.statusCode == 200) {
       final result = jsonDecode(response.body);
-      return User.fromJson(result['data']);
+      return User.fromJson(result);
     } else {
       throw Exception('Failed to load user data');
     }

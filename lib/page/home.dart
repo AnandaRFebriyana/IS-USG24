@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:get/get.dart'; // Pastikan GetX diimpor
-import 'package:mobileapp/page/addSheep.dart';
+import 'package:get/get.dart';
+import 'package:mobileapp/models/sheep_models.dart';
+import 'package:mobileapp/models/user_models.dart';
+import 'package:mobileapp/services/auth_service.dart';
+import 'package:mobileapp/services/sheep_service.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -10,13 +13,25 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late User user = User(name: '');
   String currentDate = '';
 
   @override
   void initState() {
+    fetchUser();
     super.initState();
-    // Set tanggal dan waktu saat ini pada saat inisialisasi
     currentDate = DateFormat('EEEE, d MMMM yyyy').format(DateTime.now());
+  }
+
+  Future<void> fetchUser() async {
+    try {
+      User getUser = await AuthService.getUser();
+      setState(() {
+        user = getUser;
+      });
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 
   @override
@@ -29,19 +44,17 @@ class _HomeState extends State<Home> {
           elevation: 0,
           automaticallyImplyLeading: false,
           flexibleSpace: ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(10.0),
               bottomRight: Radius.circular(10.0),
             ),
             child: Stack(
               fit: StackFit.expand,
               children: [
-                // Background image
                 Image.asset(
-                  'assets/bg_sheep.jpg', // Ganti dengan path gambar Anda
+                  'assets/bg_sheep.jpg',
                   fit: BoxFit.cover,
                 ),
-                // Layer untuk menambahkan efek gelap pada gambar
                 Container(
                   color: Colors.black.withOpacity(0.3),
                 ),
@@ -51,7 +64,6 @@ class _HomeState extends State<Home> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(height: 40),
-                      // Logo atau nama aplikasi
                       Text(
                         'IS-USG',
                         style: GoogleFonts.poppins(
@@ -61,7 +73,6 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      // Text "Selamat Datang" dan Tanggal di bawah logo
                       Align(
                         alignment: Alignment.bottomLeft,
                         child: Padding(
@@ -69,8 +80,7 @@ class _HomeState extends State<Home> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'Selamat Datang Karyawan',
+                              Text('Selamat Datang ${user.name}',
                                 style: GoogleFonts.poppins(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -102,30 +112,30 @@ class _HomeState extends State<Home> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 10),
-            // Column untuk 2 baris kotak informasi
             Column(
               children: [
-                // Baris pertama dengan dua kotak
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildInfoBox('Suhu Udara', '30°C', Colors.blue.shade100, Colors.blue, Icons.thermostat),
-                    _buildInfoBox('Kelembapan', '60%', Colors.green.shade100, Colors.green, Icons.water_drop),
+                    _buildInfoBox('Suhu Udara', '30°C', Colors.blue.shade100,
+                        Colors.blue, Icons.thermostat),
+                    _buildInfoBox('Kelembapan', '60%', Colors.green.shade100,
+                        Colors.green, Icons.water_drop),
                   ],
                 ),
                 SizedBox(height: 20),
-                // Baris kedua dengan dua kotak
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildInfoBox('Metana', '150 ppm', Colors.orange.shade100, Colors.orange, Icons.air),
-                    _buildInfoBox('Amonia', '20 ppm', Colors.red.shade100, Colors.red, Icons.science),
+                    _buildInfoBox('Metana', '150 ppm', Colors.orange.shade100,
+                        Colors.orange, Icons.air),
+                    _buildInfoBox('Amonia', '20 ppm', Colors.red.shade100,
+                        Colors.red, Icons.science),
                   ],
                 ),
               ],
             ),
             SizedBox(height: 20),
-            // Teks "Data Domba" dengan tombol "+ Add" di sebelah kanan
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -137,16 +147,14 @@ class _HomeState extends State<Home> {
                     color: Colors.black,
                   ),
                 ),
-                // Tombol "+ Add"
                 TextButton.icon(
                   onPressed: () {
-                    // Aksi saat tombol + Add ditekan, navigasi ke AddSheepForm
-                    Get.to(AddSheepForm());
+                    Get.toNamed('/addsheep');
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.add,
                     size: 18,
-                    color: const Color(0xFF697565),
+                    color: Color(0xFF697565),
                   ),
                   label: Text(
                     "Add",
@@ -163,19 +171,31 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            SizedBox(height: 10),
-            // Scrollable data domba
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: List.generate(20, (index) {
-                    return ListTile(
-                      leading: Icon(Icons.pets),
-                      title: Text('Domba $index'),
-                      subtitle: Text('Data detail domba $index'),
+              child: FutureBuilder<List<Sheep>>(
+                future: SheepService.getSheep(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (snapshot.hasData) {
+                    List<Sheep> sheepList = snapshot.data!;
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: sheepList.map((sheep) {
+                          return ListTile(
+                            leading: Icon(Icons.pets),
+                            title: Text(sheep.id),
+                            subtitle: Text(sheep.sheepName),
+                          );
+                        }).toList(),
+                      ),
                     );
-                  }),
-                ),
+                  } else {
+                    return Center(child: Text('Tidak ada data domba.'));
+                  }
+                },
               ),
             ),
           ],
@@ -185,12 +205,13 @@ class _HomeState extends State<Home> {
   }
 
   // Fungsi untuk membangun kotak informasi dengan warna judul yang bisa diatur
-  Widget _buildInfoBox(String title, String value, Color backgroundColor, Color titleColor, IconData icon) {
+  Widget _buildInfoBox(String title, String value, Color backgroundColor,
+      Color titleColor, IconData icon) {
     return Container(
-      width: (MediaQuery.of(context).size.width - 60) / 2, // Menyesuaikan ukuran kotak
+      width: (MediaQuery.of(context).size.width - 60) / 2,
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: backgroundColor,  // Menambahkan warna latar belakang
+        color: backgroundColor, // Menambahkan warna latar belakang
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.grey.shade300),
       ),
@@ -207,7 +228,7 @@ class _HomeState extends State<Home> {
             style: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: titleColor, // Warna judul disesuaikan
+              color: titleColor,
             ),
           ),
           SizedBox(height: 8),

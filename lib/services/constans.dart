@@ -4,11 +4,11 @@ class Constant {
   static const String BASE_URL_LOCAL = 'http://127.0.0.1:8000/api';
   static const String BASE_URL = 'https://isusg-mbkm.research-ai.my.id/api';
 
-  static const String LOGIN_URL = '$BASE_URL/login';
-  static const String LOGOUT_URL = '$BASE_URL/logout';
-  static const String GET_USER_URL = '$BASE_URL/get-user';
-  static const String GET_SHEEP = '$BASE_URL/get-sheep';
-  static const String GET_SHEEPBYID = '$BASE_URL/get-sheep/1';
+  static const String LOGIN = '$BASE_URL/login';
+  static const String LOGOUT = '$BASE_URL/logout';
+  static const String GET_USER = '$BASE_URL/get-user';
+  static const String GET_SHEEP = '$BASE_URL/sheep';
+  static const String GET_SHEEPBYID = '$BASE_URL/get-sheep/{id}';
   static const String POST_SHEEP = '$BASE_URL/sheep/store';
 
   static Future<void> saveToken(String token) async {

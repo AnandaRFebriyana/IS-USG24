@@ -17,13 +17,13 @@ class _MenuNavState extends State<MenuNav> {
   int currentTab = 0;
 
   final List<Widget> screens = [
-    Home(),    // Halaman Home
-    Assesment(), // Halaman Assesment Awal
+    Home(),
+    Assesment(),
     VitalSign(),
     USGPage()
   ];
 
-  Widget currentScreen = Home(); // Default ke halaman Home
+  Widget currentScreen = Home();
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +55,12 @@ class _MenuNavState extends State<MenuNav> {
           child: Container(
             height: 50,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center, // Mengubah alignment
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                // Tab untuk Home
                 _buildTabItem(0, Icons.home, 'Home'),
                 SizedBox(width: 40),
                 _buildTabItem(1, Icons.assessment, 'Assesment'),
-                SizedBox(width: 100), // Spacer untuk tombol scanner di tengah
-                // Tab untuk Profile
+                SizedBox(width: 100),
                 _buildTabItem(2, Icons.health_and_safety, 'Vital Sign'),
                 SizedBox(width: 40),
                 _buildTabItem(3, Icons.monitor_heart, 'USG'),
@@ -111,13 +109,11 @@ class _MenuNavState extends State<MenuNav> {
     Navigator.of(context).pop(); // Tutup Drawer
     if (route == 'profile') {
       setState(() {
-        currentScreen = Profile(); // Navigasi ke Profile
-        currentTab = 1;           // Update tab aktif ke Profile
+        currentScreen = Profile();
+        currentTab = 1;          
       });
     } else if (route == 'settings') {
-      // Navigasi ke halaman Settings jika ada
     } else if (route == 'help') {
-      // Navigasi ke halaman Help jika ada
     }
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobileapp/controllers/auth_controller.dart';
-import '../../components/button.dart';
+import '../components/button.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -60,7 +60,6 @@ class _LoginState extends State<Login> {
                   ],
                 ),
                 SizedBox(height: 40),
-                // Kotak input username
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -92,7 +91,6 @@ class _LoginState extends State<Login> {
                   ],
                 ),
                 SizedBox(height: 20),
-                // Kotak input password
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
