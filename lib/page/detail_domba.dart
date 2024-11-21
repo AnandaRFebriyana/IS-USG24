@@ -11,7 +11,7 @@ class DetailDomba extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Vital Sign',
+          'Detail Data Domba',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,

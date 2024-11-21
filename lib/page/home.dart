@@ -148,32 +148,36 @@ class _HomeState extends State<Home> {
                     color: Colors.black,
                   ),
                 ),
-                TextButton.icon(
+                TextButton(
                   onPressed: () {
-                    Get.toNamed('/addsheep');
+                    Get.toNamed('/datadomba');
                   },
-                  icon: const Icon(
-                    Icons.add,
-                    size: 18,
-                    color: Color(0xFF697565),
-                  ),
-                  label: Text(
-                    "Add",
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF697565),
-                    ),
-                  ),
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                     backgroundColor: Colors.transparent,
                   ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "See All",
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF697565),
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      const Icon(
+                        Icons.chevron_right,
+                        size: 20,
+                        color: Color(0xFF697565),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-            //
-
             Expanded(
               child: FutureBuilder<List<Sheep>>(
                 future: SheepService.getSheep(),
@@ -184,26 +188,46 @@ class _HomeState extends State<Home> {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (snapshot.hasData) {
                     List<Sheep> sheepList = snapshot.data!;
-                    return SingleChildScrollView(
-                      child: Column(
-                        children: sheepList.map((sheep) {
-                          return ListTile(
-                            leading: Icon(Icons.pets),
-                            title: Text(sheep.id),
-                            subtitle: Text(sheep.sheepName),
-                            onTap: () {
-                              Get.toNamed('/detaildomba', arguments: sheep);
-                            },
-                          );
-                        }).toList(),
-                      ),
+                    return ListView.builder(
+                      itemCount: sheepList.length,
+                      itemBuilder: (context, index) {
+                        Sheep sheep = sheepList[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.orange[100],
+                                child: Image.asset(
+                                  'assets/domba.png',
+                                  width: 30,
+                                  height: 30,
+                                ),
+                              ),
+                              title: Text(
+                                sheep.id,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(sheep.sheepName),
+                              trailing: Icon(Icons.chevron_right),
+                              onTap: () {
+                                Get.toNamed('/detaildomba', arguments: sheep);
+                              },
+                            ),
+                          ),
+                        );
+                      },
                     );
                   } else {
                     return Center(child: Text('Tidak ada data domba.'));
                   }
                 },
               ),
-            ),
+            )
           ],
         ),
       ),
