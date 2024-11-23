@@ -10,6 +10,11 @@ class Constant {
   static const String GET_SHEEP = '$BASE_URL/sheep';
   static const String GET_SHEEPBYID = '$BASE_URL/get-sheep/{id}';
   static const String POST_SHEEP = '$BASE_URL/sheep/store';
+  static const String GET_ASESSMENT = '$BASE_URL/assessment';
+  static const String GET_ASESSMENTBYID = '$BASE_URL/assessment/1';
+  static const String GET_RADIOLOGY = '$BASE_URL/radiology';
+  static const String GET_RADIOLOGYBYID = '$BASE_URL/radiology/1';
+
 
   static Future<void> saveToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

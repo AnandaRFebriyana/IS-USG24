@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobileapp/controllers/sheep_controller.dart';
 import 'package:mobileapp/components/button.dart';
-
 import '../components/textfield_auth.dart'; // Pastikan untuk mengimpor MyTextField
 
 class AddSheepForm extends StatefulWidget {
@@ -19,17 +18,30 @@ class _AddSheepFormState extends State<AddSheepForm> {
 
   final SheepController sheepController = Get.find<SheepController>();
 
-  // Fungsi untuk membuat ID Domba otomatis
-  String generateSheepId() {
-    // Menggunakan timestamp sebagai ID domba yang unik
-    return DateTime.now().millisecondsSinceEpoch.toString();
-  }
-
   @override
   void initState() {
     super.initState();
-    // Mengisi ID Domba otomatis saat form dibuka
-    idDombaController.text = generateSheepId();
+    // Mengisi ID Domba otomatis dari API saat form dibuka
+    sheepController.getSheepIdFromApi().then((id) {
+      setState(() {
+        idDombaController.text = id;
+      });
+    });
+  }
+
+  // Fungsi untuk menampilkan date picker
+  Future<void> _selectDate(BuildContext context) async {
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(), // Tanggal default
+      firstDate: DateTime(2000), // Batas awal tahun
+      lastDate: DateTime(2101), // Batas akhir tahun
+    );
+    if (picked != null) {
+      setState(() {
+        tanggalLahirController.text = "${picked.toLocal()}".split(' ')[0]; // Format tanggal
+      });
+    }
   }
 
   @override
@@ -62,6 +74,7 @@ class _AddSheepFormState extends State<AddSheepForm> {
                 labelText: 'ID Domba',
                 isPassword: false,
                 isObscure: false,
+                readOnly: true,
               ),
               SizedBox(height: 16),
               // Input Nama Domba
@@ -72,12 +85,17 @@ class _AddSheepFormState extends State<AddSheepForm> {
                 isObscure: false,
               ),
               SizedBox(height: 16),
-              // Input Tanggal Lahir
-              MyTextField(
-                controller: tanggalLahirController,
-                labelText: 'Tanggal Lahir',
-                isPassword: false,
-                isObscure: false,
+              // Input Tanggal Lahir dengan Kalender
+              GestureDetector(
+                onTap: () => _selectDate(context), // Fungsi untuk menampilkan kalender
+                child: AbsorbPointer(
+                  child: MyTextField(
+                    controller: tanggalLahirController,
+                    labelText: 'Tanggal Lahir',
+                    isPassword: false,
+                    isObscure: false,
+                  ),
+                ),
               ),
               SizedBox(height: 16),
               // Input Jenis Domba
@@ -98,8 +116,22 @@ class _AddSheepFormState extends State<AddSheepForm> {
                       namaDombaController.text,
                       tanggalLahirController.text,
                       jenisDombaController.text,
+                    ).then((_) {
+                      Get.back(); // Menutup form setelah berhasil
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Domba berhasil ditambahkan!')),
+                      );
+                    }).catchError((e) {
+                      // Jika ada error saat menambahkan domba
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Gagal menambah domba: $e')),
+                      );
+                    });
+                  } else {
+                    // Jika ada validasi yang gagal
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Form tidak valid!')),
                     );
-                    Get.back();
                   }
                 },
               ),

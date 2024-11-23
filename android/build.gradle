@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // Menambahkan plugin Gradle dan Kotlin di sini
+        classpath "com.android.tools.build:gradle:7.4.0" // Pastikan versi ini sesuai dengan Gradle yang kamu gunakan
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.0" // Versi Kotlin terbaru
+    }
+}
 allprojects {
     repositories {
         google()

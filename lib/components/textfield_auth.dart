@@ -6,6 +6,7 @@ class MyTextField extends StatelessWidget {
   final String labelText;
   final bool isPassword;
   final bool isObscure;
+  final bool readOnly;
   final VoidCallback? toggleObscureText;
 
   const MyTextField({
@@ -14,6 +15,7 @@ class MyTextField extends StatelessWidget {
     required this.labelText,
     this.isPassword = false,
     this.isObscure = false,
+    this.readOnly = false,
     this.toggleObscureText,
   }) : super(key: key);
 
@@ -39,6 +41,7 @@ class MyTextField extends StatelessWidget {
           TextField(
             controller: controller,
             obscureText: isPassword ? isObscure : false,
+            readOnly: readOnly,
             decoration: InputDecoration(
               // Menghilangkan border default
               border: OutlineInputBorder(

@@ -112,30 +112,6 @@ class _HomeState extends State<Home> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 10),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildInfoBox('Suhu Udara', '30°C', Colors.blue.shade100,
-                        Colors.blue, Icons.thermostat),
-                    _buildInfoBox('Kelembapan', '60%', Colors.green.shade100,
-                        Colors.green, Icons.water_drop),
-                  ],
-                ),
-                SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildInfoBox('Metana', '150 ppm', Colors.orange.shade100,
-                        Colors.orange, Icons.air),
-                    _buildInfoBox('Amonia', '20 ppm', Colors.red.shade100,
-                        Colors.red, Icons.science),
-                  ],
-                ),
-              ],
-            ),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
