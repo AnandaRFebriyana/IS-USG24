@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:mobileapp/page/assesment_awal.dart';
+import 'package:mobileapp/page/detail_vital_sign.dart';
 import 'package:mobileapp/page/login.dart';
 import 'package:mobileapp/page/splash_screen.dart';
 import 'package:mobileapp/page/addSheep.dart';
@@ -11,6 +12,7 @@ import 'package:mobileapp/page/menu_nav.dart';
 import 'package:mobileapp/page/scanner.dart';
 import 'package:mobileapp/page/usg.dart';
 import 'package:mobileapp/page/vital_sign.dart';
+import 'package:mobileapp/page/vital_sign_graph.dart';
 
 class RouteApp {
   static final pages = [
@@ -26,7 +28,7 @@ class RouteApp {
     GetPage(name: '/detailass', page: () => DetailAssesmentAwal()),
     GetPage(name: '/vital', page: () => VitalSign()),
     GetPage(name: '/usg', page: () => USGPage()),
-    //GetPage(name: '/detailvitalsign', page: () => DetailVitalSign()),
-    //GetPage(name: '/vitalsign', page: () => VitalSign()),
+    GetPage(name: '/detailvitalsign', page: () => DetailVitalSign()),
+    GetPage(name: '/grafikvitalsign', page: () => VitalSignGraph()),
   ];
 }

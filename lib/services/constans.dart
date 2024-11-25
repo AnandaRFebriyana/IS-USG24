@@ -8,13 +8,11 @@ class Constant {
   static const String LOGOUT = '$BASE_URL/logout';
   static const String GET_USER = '$BASE_URL/get-user';
   static const String GET_SHEEP = '$BASE_URL/sheep';
-  static const String GET_SHEEPBYID = '$BASE_URL/get-sheep/{id}';
+  static const String GET_SHEEPBYID = '$BASE_URL/sheep/{id}';
   static const String POST_SHEEP = '$BASE_URL/sheep/store';
-  static const String GET_ASESSMENT = '$BASE_URL/assessment';
-  static const String GET_ASESSMENTBYID = '$BASE_URL/assessment/1';
+  static const String GET_ASSESSMENT = '$BASE_URL/assessment';
+  static const String GET_VITAL = '$BASE_URL/vital';
   static const String GET_RADIOLOGY = '$BASE_URL/radiology';
-  static const String GET_RADIOLOGYBYID = '$BASE_URL/radiology/1';
-
 
   static Future<void> saveToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -25,4 +23,4 @@ class Constant {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('token');
   }
-}  
+}

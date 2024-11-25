@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobileapp/controllers/sheep_controller.dart';
+import 'package:mobileapp/models/sheep_models.dart';
 import 'package:mobileapp/page/addSheep.dart';
-import '../controllers/sheep_controller.dart';
+import 'package:mobileapp/services/sheep_service.dart';
 
 class Data extends StatefulWidget {
   @override
@@ -65,44 +67,59 @@ class _DataState extends State<Data> {
               ),
             ),
           ),
-          // Expanded(
-            // child: Obx(() {
-            //   if (sheepController.sheepList.isEmpty) {
-            //     return Center(child: CircularProgressIndicator());
-            //   } else {
-            //     return RefreshIndicator(
-            //       onRefresh: sheepController.fetchSheep,
-            //       child: ListView.builder(
-            //         itemCount: sheepController.filteredList.length,
-            //         itemBuilder: (context, index) {
-            //           var sheep = sheepController.filteredList[index];
-            //           return Card(
-            //             elevation: 1,
-            //             color: Color.fromARGB(255, 252, 254, 255),
-            //             child: ListTile(
-            //               leading: CircleAvatar(
-            //                 backgroundImage: AssetImage(sheep.image),
-            //               ),
-            //               title: Text(sheep.namaDomba),
-            //               subtitle: Text('ID: ${sheep.idDomba}\nJenis: ${sheep.jenisDomba}'),
-            //               onTap: () {
-            //                 // Navigasi ke halaman detail domba
-            //                 Get.toNamed('/detaildomba', arguments: {
-            //                   'idDomba': sheep.idDomba,
-            //                   'namaDomba': sheep.namaDomba,
-            //                   'tanggalLahir': sheep.tanggalLahir,
-            //                   'jenisDomba': sheep.jenisDomba,
-            //                   'image': sheep.image,
-            //                 });
-            //               },
-            //             ),
-            //           );
-            //         },
-            //       ),
-            //     );
-            //   }
-            // }),
-          // ),
+          Expanded(
+            child: FutureBuilder<List<Sheep>>(
+              future: SheepService.getSheep(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (snapshot.hasData) {
+                  List<Sheep> sheepList = snapshot.data!;
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: ListView.builder(
+                      itemCount: sheepList.length,
+                      itemBuilder: (context, index) {
+                        Sheep sheep = sheepList[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundColor: Colors.orange[100],
+                                child: Image.asset(
+                                  'assets/domba.png',
+                                  width: 30,
+                                  height: 30,
+                                ),
+                              ),
+                              title: Text(
+                                sheep.id,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(sheep.sheepName),
+                              trailing: Icon(Icons.chevron_right),
+                              onTap: () {
+                                Get.toNamed('/detaildomba', arguments: sheep);
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                } else {
+                  return Center(child: Text('Tidak ada data domba.'));
+                }
+              },
+            ),
+          )
         ],
       ),
     );

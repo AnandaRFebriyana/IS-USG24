@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:mobileapp/services/vital_sign_service.dart';
+import 'package:mobileapp/models/vital_sign_models.dart';
 
 class VitalSign extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Removes the back arrow
+        automaticallyImplyLeading: false,
         title: Text(
           'Vital Sign',
           style: TextStyle(
@@ -34,91 +38,82 @@ class VitalSign extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16),
-            // List of Domba Cards
             Expanded(
-              child: ListView.builder(
-                itemCount: 3, // Adjust the number of items
-                itemBuilder: (context, index) {
-                  return Card(
-                    color: Colors.grey[200], // Moved color here
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Colors.amberAccent,
-                                child: Image.asset(
-                                  'assets/domba.png', // Add the icon to your assets folder
-                                  fit: BoxFit.cover,
-                                ),
+              child: FutureBuilder<List<VitalSigns>>(
+                future: VitalSignsService.getVitalSigns(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (snapshot.hasData) {
+                    List<VitalSigns> vitalSignsList = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: vitalSignsList.length,
+                      itemBuilder: (context, index) {
+                        VitalSigns vitalSign = vitalSignsList[index];
+                        String formattedDate =
+                            DateFormat('d MMMM yyyy, HH:mm:ss')
+                                .format(vitalSign.createdAt);
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey[100],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: ListTile(
+                              leading:
+                                  Icon(Icons.monitor_heart, color: Colors.red),
+                              title: Text(
+                                '${vitalSign.sheepId} - ${vitalSign.sheepName}', // Nama Domba
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(width: 16),
-                              Column(
+                              subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'ID Vital: VS00123456',
+                                    'Status: ${vitalSign.statusCondition}',
                                     style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                      color: vitalSign.statusCondition .toLowerCase() == 'sehat'
+                                          ? Colors.green
+                                          : Colors.red,
                                     ),
                                   ),
-                                  SizedBox(height: 4),
                                   Text(
-                                    'ID Domba: D00118052024',
+                                    formattedDate,
                                     style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                        fontSize: 12, color: Colors.grey),
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                          SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ElevatedButton.icon(
-                                onPressed: () {},
-                                icon: Icon(Icons.show_chart),
-                                label: Text('Grafik'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.orange,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
+                              trailing: IconButton(
+                                icon: Icon(
+                                  Icons.show_chart,
+                                  color: Colors.deepOrange,
                                 ),
+                                onPressed: () {
+                                  print('Tombol grafik ditekan');
+                                  // Get.toNamed('/grafikvitalsign',
+                                  //     arguments: vitalSign);
+                                },
                               ),
-                              SizedBox(width: 8),
-                              ElevatedButton.icon(
-                                onPressed: () {},
-                                icon: Icon(Icons.arrow_forward),
-                                label: Text('Detail'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.grey,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              ),
-                            ],
+                              onTap: () {
+                                Get.toNamed('/detailvitalsign',
+                                    arguments: vitalSign);
+                              },
+                            ),
                           ),
-                        ],
-                      ),
-                    ),
-                  );
+                        );
+                      },
+                    );
+                  } else {
+                    return Center(child: Text('Tidak ada data vital signs.'));
+                  }
                 },
               ),
-            ),
+            )
           ],
         ),
       ),
