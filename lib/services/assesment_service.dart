@@ -9,7 +9,7 @@ class AssessmentService {
     try {
       final token = await Constant.getToken();
       final response = await http.get(
-        Uri.parse(Constant.GET_ASESSMENT),
+        Uri.parse(Constant.GET_ASSESSMENT),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -23,27 +23,6 @@ class AssessmentService {
       }
     } catch (e) {
       throw Exception('Failed to fetch data: $e');
-    }
-  }
-
-  // Method untuk mengambil assessment berdasarkan ID
-  Future<Assessment?> getAssessmentById(String id) async {
-    try {
-      final token = await Constant.getToken();
-      final response = await http.get(
-        Uri.parse(Constant.GET_ASESSMENTBYID.replaceFirst("{id}", id)),
-        headers: {
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        return Assessment.fromJson(json.decode(response.body));
-      } else {
-        throw Exception('Failed to load assessment');
-      }
-    } catch (e) {
-      throw Exception('Failed to fetch assessment by ID: $e');
     }
   }
 }

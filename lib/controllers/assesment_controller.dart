@@ -24,14 +24,4 @@ class AssessmentController extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  // Fetch assessment by ID
-  Future<Assessment?> fetchAssessmentById(String id) async {
-    try {
-      return await _assessmentService.getAssessmentById(id);
-    } catch (e) {
-      print('Error fetching assessment by ID: $e');
-      return null;
-    }
-  }
 }
