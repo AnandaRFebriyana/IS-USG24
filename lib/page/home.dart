@@ -15,10 +15,13 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late User user = User(name: '');
   String currentDate = '';
+  int femaleCount = 0;
+  int maleCount = 0;
 
   @override
   void initState() {
     fetchUser();
+    fetchSheepData();
     super.initState();
     currentDate = DateFormat('EEEE, d MMMM yyyy').format(DateTime.now());
   }
@@ -34,11 +37,33 @@ class _HomeState extends State<Home> {
     }
   }
 
+  Future<void> fetchSheepData() async {
+    try {
+      List<Sheep> sheepList = await SheepService.getSheep();
+      int male = 0;
+      int female = 0;
+      for (var sheep in sheepList) {
+        print('Sheep Gender: ${sheep.sheepGender}');
+        if (sheep.sheepGender == 'Betina') {
+          female++;
+        } else if (sheep.sheepGender == 'Jantan') {
+          male++;
+        }
+      }
+      setState(() {
+        femaleCount = female;
+        maleCount = male;
+      });
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(140), // Tinggi custom AppBar
+        preferredSize: Size.fromHeight(140),
         child: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -58,7 +83,6 @@ class _HomeState extends State<Home> {
                 Container(
                   color: Colors.black.withOpacity(0.3),
                 ),
-                // Konten di atas gambar
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -112,6 +136,15 @@ class _HomeState extends State<Home> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(height: 20),
+            // Add boxes for Male and Female sheep count
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildInfoBox('Domba Betina', femaleCount.toString(), Colors.pink[100]!, Colors.pink, Icons.female),
+                _buildInfoBox('Domba Jantan', maleCount.toString(), Colors.blue[100]!, Colors.blue, Icons.male),
+              ],
+            ),
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -203,21 +236,19 @@ class _HomeState extends State<Home> {
                   }
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 
-  // Fungsi untuk membangun kotak informasi dengan warna judul yang bisa diatur
-  Widget _buildInfoBox(String title, String value, Color backgroundColor,
-      Color titleColor, IconData icon) {
+  Widget _buildInfoBox(String title, String value, Color backgroundColor, Color titleColor, IconData icon) {
     return Container(
       width: (MediaQuery.of(context).size.width - 60) / 2,
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: backgroundColor, // Menambahkan warna latar belakang
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: Colors.grey.shade300),
       ),

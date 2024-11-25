@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mobileapp/models/assesment_models.dart';
 import 'package:mobileapp/page/detail_assesment.dart';
 import 'package:mobileapp/services/assesment_service.dart';
@@ -94,13 +95,8 @@ class _AssesmentState extends State<Assesment> {
                             subtitle: Text('ID Domba ${assessment.sheepId}'),
                             trailing: Icon(Icons.chevron_right),
                             onTap: () {
-                              // Navigate to DetailAssesmentAwal page
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetailAssesmentAwal(),
-                                ),
-                              );
+                              Get.toNamed('/detailass',
+                                    arguments: assessment);
                             },
                           ),
                         ),
