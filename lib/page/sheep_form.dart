@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:mobileapp/components/button.dart';
 import 'package:mobileapp/components/widgets.dart';
+import 'package:mobileapp/controllers/sheep_controller.dart';
+import 'package:mobileapp/models/sheep_models.dart';
 
 class SheepForm extends StatefulWidget {
   @override
@@ -12,10 +15,24 @@ class SheepForm extends StatefulWidget {
 
 class _SheepFormState extends State<SheepForm> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController namaDombaController = TextEditingController();
-  final TextEditingController tanggalLahirController = TextEditingController();
-  String? _jenisKelamin;
-  File? _image;
+  final TextEditingController sheepName = TextEditingController();
+  final TextEditingController sheepBirth = TextEditingController();
+  String? _sheepGender;
+  File? _sheepPhoto;
+
+  Future<void> _saveSheep() async {
+  DateTime sheepBirthDate = DateFormat('dd/MM/yyyy').parse(sheepBirth.text);
+  if (_formKey.currentState!.validate()) {
+    Sheep sheep = Sheep(
+      id: '',
+      sheepName: sheepName.text,
+      sheepBirth: sheepBirthDate,
+      sheepGender: _sheepGender!,
+      sheepPhoto: _sheepPhoto,
+    );
+    await SheepController.createSheep(context, sheep);
+  }
+}
 
   Future<void> _pilihTanggalLahir(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
@@ -31,7 +48,7 @@ class _SheepFormState extends State<SheepForm> {
       },
     );
     if (pickedDate != null) {
-      tanggalLahirController.text =
+      sheepBirth.text =
           "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
     }
   }
@@ -41,7 +58,7 @@ class _SheepFormState extends State<SheepForm> {
     final XFile? pickedFile = await picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        _sheepPhoto = File(pickedFile.path);
       });
     }
   }
@@ -80,7 +97,16 @@ class _SheepFormState extends State<SheepForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tambah Data Domba'),
+        title: Text(
+          'Tambah Data Domba',
+          style: GoogleFonts.poppins(
+            textStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
         backgroundColor: Colors.white,
       ),
       body: Padding(
@@ -89,28 +115,25 @@ class _SheepFormState extends State<SheepForm> {
           key: _formKey,
           child: ListView(
             children: [
-              // Input Nama Domba
               MyTextField(
-                controller: namaDombaController,
+                controller: sheepName,
                 labelText: 'Nama Domba',
               ),
               SizedBox(height: 16),
-
-              // Input Tanggal Lahir
               MyDatePicker(
-                controller: tanggalLahirController,
+                controller: sheepBirth,
                 labelText: 'Tanggal Lahir',
                 onTap: () => _pilihTanggalLahir(context),
               ),
               SizedBox(height: 16),
               MyDropdown(
                 labelText: 'Jenis Kelamin',
-                selectedValue: _jenisKelamin,
+                selectedValue: _sheepGender,
                 items: ['Jantan', 'Betina'],
                 onChanged: (value) {
                   if (value != null) {
                     setState(() {
-                      _jenisKelamin = value;
+                      _sheepGender = value;
                     });
                   }
                 },
@@ -147,7 +170,7 @@ class _SheepFormState extends State<SheepForm> {
                 ),
               ),
               SizedBox(height: 10),
-              if (_image != null)
+              if (_sheepPhoto != null)
                 Container(
                   height: 200,
                   decoration: BoxDecoration(
@@ -155,7 +178,7 @@ class _SheepFormState extends State<SheepForm> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Image.file(
-                    _image!,
+                    _sheepPhoto!,
                     fit: BoxFit.cover,
                     width: double.infinity,
                   ),
@@ -179,10 +202,7 @@ class _SheepFormState extends State<SheepForm> {
               SizedBox(height: 16),
               MyButton(
                 text: 'Simpan',
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                  }
-                },
+                onPressed: _saveSheep
               ),
             ],
           ),

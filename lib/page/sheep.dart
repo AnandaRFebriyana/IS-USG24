@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobileapp/controllers/sheep_controller.dart';
 import 'package:mobileapp/models/sheep_models.dart';
 import 'package:mobileapp/services/sheep_service.dart';
 
@@ -11,7 +10,6 @@ class SheepPage extends StatefulWidget {
 }
 
 class _SheepPageState extends State<SheepPage> {
-  final SheepController sheepController = Get.put(SheepController());
   final TextEditingController searchController = TextEditingController();
 
   @override

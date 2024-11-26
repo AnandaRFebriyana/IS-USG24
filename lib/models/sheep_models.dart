@@ -1,9 +1,11 @@
+import 'dart:io';
+
 class Sheep {
   final String id;
   final String sheepName;
-  final String sheepBirth;
+  final DateTime sheepBirth;
   final String sheepGender;
-  final String? sheepPhoto;
+  final File? sheepPhoto;
 
   Sheep({
     required this.id,
@@ -17,9 +19,9 @@ class Sheep {
     return Sheep(
       id: json['id'],
       sheepName: json['sheep_name'],
-      sheepBirth: json['sheep_birth'],
+      sheepBirth: DateTime.parse(json['sheep_birth']),
       sheepGender: json['sheep_gender'],
-      sheepPhoto: json['sheep_photo'],
+      sheepPhoto: json['sheep_photo'] != null ? File(json['sheep_photo']) : null,
     );
   }
 }
