@@ -41,9 +41,9 @@ class AuthService {
 
   static Future<User> getUser() async {
     String? token = await Constant.getToken();
-    final url = Uri.parse(Constant.GET_USER);
+    //final url = Uri.parse(Constant.GET_USER);
     final response = await http.get(
-      url,
+      Uri.parse(Constant.GET_USER),
       headers: {'Authorization': 'Bearer $token'},
     );
     if (response.statusCode == 200) {

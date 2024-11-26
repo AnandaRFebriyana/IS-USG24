@@ -1,7 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:mobileapp/models/assesment_models.dart';
 import 'package:mobileapp/page/detail_assesment.dart';
+import 'package:mobileapp/services/assesment_service.dart';
 
-class Assesment extends StatelessWidget {
+class Assesment extends StatefulWidget {
+  @override
+  _AssesmentState createState() => _AssesmentState();
+}
+
+class _AssesmentState extends State<Assesment> {
+  late Future<List<Assessment>> _futureAssessments;
+
+  @override
+  void initState() {
+    super.initState();
+    // Memulai pengambilan data assessment
+    _futureAssessments = AssessmentService().getAssessments();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,44 +53,55 @@ class Assesment extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16),
-            // List of assessments
+            // FutureBuilder untuk mengambil data dan menampilkan daftar assessments
             Expanded(
-              child: ListView.builder(
-                itemCount: 5, // Example count of items
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[100],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.orange[100],
-                          child: Image.asset(
-                            'assets/domba.png', // Add your sheep icon here
-                            width: 30,
-                            height: 30,
+              child: FutureBuilder<List<Assessment>>(
+                future: _futureAssessments,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No assessments available.'));
+                  }
+
+                  // Jika data tersedia, tampilkan daftar
+                  final assessments = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: assessments.length,
+                    itemBuilder: (context, index) {
+                      final assessment = assessments[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.orange[100],
+                              child: Image.asset(
+                                'assets/domba.png', // Sesuaikan dengan asset Anda
+                                width: 30,
+                                height: 30,
+                              ),
+                            ),
+                            title: Text(
+                              'ID Assesment ${assessment.id}',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text('ID Domba ${assessment.sheepId}'),
+                            trailing: Icon(Icons.chevron_right),
+                            onTap: () {
+                              Get.toNamed('/detailass',
+                                    arguments: assessment);
+                            },
                           ),
                         ),
-                        title: Text(
-                          'ID Assesment RD00118052024',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text('ID Domba D00118052024'),
-                        trailing: Icon(Icons.chevron_right),
-                        onTap: () {
-                          // Navigate to DetailAssesmentAwal page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailAssesmentAwal(),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
+                      );
+                    },
                   );
                 },
               ),

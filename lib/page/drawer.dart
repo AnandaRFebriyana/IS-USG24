@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobileapp/services/auth_service.dart';
+import 'package:mobileapp/models/user_models.dart';
 
 class MyDrawer extends StatelessWidget {
   final Function(String) onSelect; // Menambahkan parameter untuk fungsi navigasi
@@ -8,26 +10,64 @@ class MyDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color.fromARGB(255, 149, 181, 139),
       child: Column(
         children: [
           // Drawer Header dengan Foto dan Nama
-          UserAccountsDrawerHeader(
-            accountName: Text(
-              'Nanda',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-              ),
-            ),
-            accountEmail: null, // Hilangkan email
-            currentAccountPicture: CircleAvatar(
-              backgroundImage: AssetImage('assets/domba.png'), 
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white
-              ,
-            ),
+          FutureBuilder<User>(
+            future: AuthService.getUser(), // Memanggil fungsi getUser() untuk mendapatkan data user
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return UserAccountsDrawerHeader(
+                  accountName: Text('Loading...'),
+                  accountEmail: null, // Hilangkan email
+                  currentAccountPicture: Image.asset('assets/logogmf.png', width: 50, height: 50), // Ganti dengan logo GMF
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                );
+              } else if (snapshot.hasError) {
+                return UserAccountsDrawerHeader(
+                  accountName: Text('Error loading user data'),
+                  accountEmail: null, // Hilangkan email
+                  currentAccountPicture: Image.asset('assets/logogmf.png', width: 50, height: 50), // Ganti dengan logo GMF
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                );
+              } else if (snapshot.hasData) {
+                User user = snapshot.data!;
+                return UserAccountsDrawerHeader(
+                  accountName: Text(
+                    user.name ?? 'No Name',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                    ),
+                  ),
+                  accountEmail: Text(  // Menambahkan email pengguna
+                    user.email ?? 'No Email',
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 14,
+                    ),
+                  ),
+                  currentAccountPicture: Image.asset('assets/logogmf.png', width: 50, height: 50), // Ganti dengan logo GMF
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                );
+              } else {
+                return UserAccountsDrawerHeader(
+                  accountName: Text('No user data available'),
+                  accountEmail: null,
+                  currentAccountPicture: Image.asset('assets/logogmf.png', width: 50, height: 50), // Ganti dengan logo GMF
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                );
+              }
+            },
           ),
           // List item My Profile
           ListTile(
@@ -78,8 +118,16 @@ class MyDrawer extends StatelessWidget {
       ),
     );
   }
-  void _logout(BuildContext context) {
-    // Logika untuk logout (misalnya, menghapus token, kembali ke login screen, dll.)
-    Navigator.of(context).pushReplacementNamed('/login'); // Ganti dengan route login yang sesuai
+
+  void _logout(BuildContext context) async {
+    try {
+      await AuthService.logout(); // Panggil fungsi logout
+      Navigator.of(context).pushReplacementNamed('/login'); // Kembali ke halaman login
+    } catch (e) {
+      print('Error during logout: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to logout, try again later.')),
+      );
+    }
   }
 }
