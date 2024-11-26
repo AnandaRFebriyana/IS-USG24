@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobileapp/controllers/auth_controller.dart';
 import 'package:mobileapp/services/auth_service.dart';
 import 'package:mobileapp/models/user_models.dart';
 
@@ -107,27 +108,13 @@ class MyDrawer extends StatelessWidget {
             leading: Icon(Icons.logout, color: Colors.red),
             title: Text(
               'Logout',
-              style: TextStyle(color: Colors.red),
             ),
             onTap: () {
-              // Aksi logout
-              _logout(context);
+              AuthController.logout(context);
             },
           ),
         ],
       ),
     );
-  }
-
-  void _logout(BuildContext context) async {
-    try {
-      await AuthService.logout(); // Panggil fungsi logout
-      Navigator.of(context).pushReplacementNamed('/login'); // Kembali ke halaman login
-    } catch (e) {
-      print('Error during logout: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to logout, try again later.')),
-      );
-    }
   }
 }

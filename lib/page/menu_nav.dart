@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobileapp/page/assesment_awal.dart';
+import 'package:mobileapp/page/assessment.dart';
 import 'package:mobileapp/page/drawer.dart';
 import 'package:mobileapp/page/radiology.dart';
 import 'package:mobileapp/page/vital_sign.dart';

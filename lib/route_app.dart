@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:mobileapp/page/assesment_awal.dart';
+import 'package:mobileapp/page/assessment.dart';
 import 'package:mobileapp/page/sheep_form.dart';
 import 'package:mobileapp/page/detail_vital_sign.dart';
 import 'package:mobileapp/page/login.dart';

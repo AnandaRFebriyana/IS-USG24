@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mobileapp/models/assesment_models.dart';
-import 'package:mobileapp/page/detail_assesment.dart';
 import 'package:mobileapp/services/assesment_service.dart';
 
 class Assesment extends StatefulWidget {
@@ -25,8 +25,8 @@ class _AssesmentState extends State<Assesment> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          'Assesment Awal',
-          style: TextStyle(
+          'Pemeriksaan Awal',
+          style: GoogleFonts.poppins(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
@@ -53,7 +53,6 @@ class _AssesmentState extends State<Assesment> {
               ),
             ),
             SizedBox(height: 16),
-            // FutureBuilder untuk mengambil data dan menampilkan daftar assessments
             Expanded(
               child: FutureBuilder<List<Assessment>>(
                 future: _futureAssessments,
@@ -65,8 +64,6 @@ class _AssesmentState extends State<Assesment> {
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return Center(child: Text('No assessments available.'));
                   }
-
-                  // Jika data tersedia, tampilkan daftar
                   final assessments = snapshot.data!;
                   return ListView.builder(
                     itemCount: assessments.length,
@@ -83,7 +80,7 @@ class _AssesmentState extends State<Assesment> {
                             leading: CircleAvatar(
                               backgroundColor: Colors.orange[100],
                               child: Image.asset(
-                                'assets/domba.png', // Sesuaikan dengan asset Anda
+                                'assets/domba.png',
                                 width: 30,
                                 height: 30,
                               ),
@@ -95,7 +92,7 @@ class _AssesmentState extends State<Assesment> {
                             subtitle: Text('ID Domba ${assessment.sheepId}'),
                             trailing: Icon(Icons.chevron_right),
                             onTap: () {
-                              Get.toNamed('/detailass',
+                              Get.toNamed('/detail-ass',
                                     arguments: assessment);
                             },
                           ),

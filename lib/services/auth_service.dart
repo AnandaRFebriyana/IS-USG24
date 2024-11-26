@@ -28,7 +28,7 @@ class AuthService {
       url,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': '$token',
+        'Authorization': 'Bearer $token',
       },
     );
 
@@ -41,7 +41,6 @@ class AuthService {
 
   static Future<User> getUser() async {
     String? token = await Constant.getToken();
-    //final url = Uri.parse(Constant.GET_USER);
     final response = await http.get(
       Uri.parse(Constant.GET_USER),
       headers: {'Authorization': 'Bearer $token'},
