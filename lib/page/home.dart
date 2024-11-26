@@ -150,7 +150,7 @@ class _HomeState extends State<Home> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Get.toNamed('/datadomba');
+                    Get.toNamed('/sheep');
                   },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),

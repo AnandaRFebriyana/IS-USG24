@@ -3,15 +3,14 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobileapp/controllers/sheep_controller.dart';
 import 'package:mobileapp/models/sheep_models.dart';
-import 'package:mobileapp/page/addSheep.dart';
 import 'package:mobileapp/services/sheep_service.dart';
 
-class Data extends StatefulWidget {
+class SheepPage extends StatefulWidget {
   @override
-  _DataState createState() => _DataState();
+  _SheepPageState createState() => _SheepPageState();
 }
 
-class _DataState extends State<Data> {
+class _SheepPageState extends State<SheepPage> {
   final SheepController sheepController = Get.put(SheepController());
   final TextEditingController searchController = TextEditingController();
 
@@ -40,9 +39,7 @@ class _DataState extends State<Data> {
         actions: [
           IconButton(
             icon: Icon(Icons.add, color: Colors.black),
-            onPressed: () {
-              Get.to(() => AddSheepForm());
-            },
+            onPressed: () => Get.toNamed('/sheep-form'),
           ),
         ],
       ),
@@ -106,7 +103,7 @@ class _DataState extends State<Data> {
                               subtitle: Text(sheep.sheepName),
                               trailing: Icon(Icons.chevron_right),
                               onTap: () {
-                                Get.toNamed('/detaildomba', arguments: sheep);
+                                Get.toNamed('/detail-sheep', arguments: sheep);
                               },
                             ),
                           ),

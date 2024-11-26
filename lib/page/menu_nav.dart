@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobileapp/page/assesment_awal.dart';
 import 'package:mobileapp/page/drawer.dart';
-import 'package:mobileapp/page/usg.dart';
+import 'package:mobileapp/page/radiology.dart';
 import 'package:mobileapp/page/vital_sign.dart';
 import 'home.dart'; 
 import 'profile.dart'; 
@@ -20,7 +20,7 @@ class _MenuNavState extends State<MenuNav> {
     Home(),
     Assesment(),
     VitalSign(),
-    USGPage()
+    Radiology()
   ];
 
   Widget currentScreen = Home();

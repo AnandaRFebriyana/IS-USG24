@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class USGPage extends StatelessWidget {
+class Radiology extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +50,7 @@ class USGPage extends StatelessWidget {
                         leading: CircleAvatar(
                           backgroundColor: Colors.orange[100],
                           child: Image.asset(
-                            'assets/domba.png', // Add your sheep icon here
+                            'assets/domba.png',
                             width: 30,
                             height: 30,
                           ),
@@ -74,7 +74,7 @@ class USGPage extends StatelessWidget {
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(
-                          //     builder: (context) => DetailUSGPage(),
+                          //     builder: (context) => DetailRadiology(),
                           //   ),
                           // );
                         },
