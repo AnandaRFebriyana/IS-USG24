@@ -6,6 +6,7 @@ class Sheep {
   final DateTime sheepBirth;
   final String sheepGender;
   final File? sheepPhoto;
+  final String? sheepPhotoPath;
 
   Sheep({
     required this.id,
@@ -13,6 +14,7 @@ class Sheep {
     required this.sheepBirth,
     required this.sheepGender,
     this.sheepPhoto,
+    this.sheepPhotoPath
   });
 
   factory Sheep.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class Sheep {
       sheepBirth: DateTime.parse(json['sheep_birth']),
       sheepGender: json['sheep_gender'],
       sheepPhoto: json['sheep_photo'] != null ? File(json['sheep_photo']) : null,
+      sheepPhotoPath: json['sheep_photo'],
     );
   }
 }

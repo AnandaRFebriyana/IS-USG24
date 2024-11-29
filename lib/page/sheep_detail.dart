@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:barcode_widget/barcode_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mobileapp/models/sheep_models.dart';
@@ -10,7 +9,7 @@ class DetailDomba extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  String formattedDate = DateFormat('d MMMM yyyy').format(sheep.sheepBirth);
+    String formattedDate = DateFormat('d MMMM yyyy').format(sheep.sheepBirth);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -31,11 +30,18 @@ class DetailDomba extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 30),
-              BarcodeWidget(
-                barcode: Barcode.qrCode(),
-                data: sheep.id,
-                width: 200,
-                height: 200,
+              Container(
+                width: 150,
+                height: 150,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: sheep.sheepPhotoPath != null && sheep.sheepPhotoPath!.isNotEmpty
+                        ? NetworkImage('https://isusg-mbkm.research-ai.my.id/storage/${sheep.sheepPhotoPath}')
+                        : const AssetImage('assets/domba.png') as ImageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
               SizedBox(height: 20),
               _buildDetailField('ID Domba', sheep.id),
