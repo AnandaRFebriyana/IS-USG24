@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobileapp/page/assesment_awal.dart';
 import 'package:mobileapp/page/drawer.dart';
-import 'package:mobileapp/page/usg.dart';
+import 'package:mobileapp/page/radiologi.dart';
 import 'package:mobileapp/page/vital_sign.dart';
 import 'home.dart'; 
 import 'profile.dart'; 
@@ -20,7 +20,7 @@ class _MenuNavState extends State<MenuNav> {
     Home(),
     Assesment(),
     VitalSign(),
-    USGPage()
+    Radiology()
   ];
 
   Widget currentScreen = Home();
@@ -58,12 +58,12 @@ class _MenuNavState extends State<MenuNav> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 _buildTabItem(0, Icons.home, 'Home'),
-                SizedBox(width: 40),
+                SizedBox(width: 3),
                 _buildTabItem(1, Icons.assessment, 'Assesment'),
-                SizedBox(width: 100),
+                SizedBox(width: 90),
                 _buildTabItem(2, Icons.health_and_safety, 'Vital Sign'),
-                SizedBox(width: 40),
-                _buildTabItem(3, Icons.monitor_heart, 'USG'),
+                SizedBox(width: 30),
+                _buildTabItem(3, Icons.monitor_heart, 'Radiologi'),
               ],
             ),
           ),
