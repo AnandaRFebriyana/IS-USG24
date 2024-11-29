@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobileapp/models/assesment_models.dart';
-import 'package:mobileapp/services/constans.dart';
+import 'package:mobileapp/constans.dart';
 
 class AssessmentService {
   // Method untuk mengambil semua data assessment

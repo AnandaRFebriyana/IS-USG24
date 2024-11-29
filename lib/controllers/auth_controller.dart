@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mobileapp/components/alert_quick.dart';
 import 'package:mobileapp/models/user_models.dart';
 import 'package:mobileapp/services/auth_service.dart';
-import 'package:mobileapp/services/constans.dart';
+import 'package:mobileapp/constans.dart';
 
 class AuthController {
 

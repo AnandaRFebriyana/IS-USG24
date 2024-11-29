@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobileapp/models/sheep_models.dart';
-import 'package:mobileapp/services/constans.dart';
+import 'package:mobileapp/constans.dart';
 
 class SheepService {
   static Future<List<Sheep>> getSheep() async {
@@ -22,17 +22,20 @@ class SheepService {
     }
   }
 
-   Future<Sheep> fetchSheepById(String id) async {
-    try {
-      final response = await http.get(Uri.parse(Constant.GET_SHEEPBYID));
-      if (response.statusCode == 200) {
-        return Sheep.fromJson(json.decode(response.body));
-      } else {
-        throw Exception('Gagal memuat data');
-      }
-    } catch (e) {
-      print('Error fetching data: $e');
-      throw Exception('Gagal memuat data');
+  static Future<Sheep> fetchSheepById(String id) async {
+    final url = Uri.parse(Constant.GET_SHEEPBYID);
+    final response = await http.get(
+      url,
+      headers: {'Authorization': 'Bearer ${await Constant.getToken()}'},
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = json.decode(response.body);
+      return Sheep.fromJson(jsonResponse['data']);
+    } else if (response.statusCode == 404) {
+      throw Exception('Domba dengan ID $id tidak ditemukan');
+    } else {
+      throw Exception('Gagal memuat data: ${response.statusCode}');
     }
   }
 

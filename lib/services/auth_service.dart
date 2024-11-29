@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobileapp/models/user_models.dart';
-import 'package:mobileapp/services/constans.dart';
+import 'package:mobileapp/constans.dart';
 
 class AuthService {
   static Future<User?> login(String email, String password) async {

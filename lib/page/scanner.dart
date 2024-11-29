@@ -50,7 +50,7 @@ class _ScannerState extends State<Scanner> {
               children: <Widget>[
                 IconButton(
                   onPressed: () async {
-                     if (!mounted) return;
+                    if (!mounted) return;
                     setState(() {
                       _flashOn = !_flashOn;
                     });
@@ -61,13 +61,14 @@ class _ScannerState extends State<Scanner> {
                 ),
                 IconButton(
                   onPressed: () async {
-                     if (!mounted) return;
+                    if (!mounted) return;
                     await _controller?.flipCamera();
                     setState(() {
                       _frontCam = !_frontCam;
                     });
                   },
-                  icon: Icon(_frontCam ? Icons.camera_front : Icons.camera_rear),
+                  icon:
+                      Icon(_frontCam ? Icons.camera_front : Icons.camera_rear),
                   color: Colors.white,
                 ),
                 IconButton(
@@ -83,32 +84,67 @@ class _ScannerState extends State<Scanner> {
     );
   }
 
+  // void _onQRViewCreated(QRViewController controller) {
+  //   this._controller = controller;
+  //   controller.scannedDataStream.listen((Barcode barcode) async {
+  //     await controller.pauseCamera();
+  //     if (!mounted) return;
+
+  //     print('Scanned data: ${barcode.code}');
+
+  //     // Get.toNamed('/detail-sheep', arguments: {
+  //     //   'idDomba': barcode.code, // Data yang dipindai dari barcode
+  //     //   // Tambahkan data lain yang dibutuhkan
+  //     // });
+  //      try {
+  //       Sheep sheep = await sheepService.fetchSheepById(barcode.code!);
+  //       Get.toNamed('/detail-sheep', arguments: {
+  //         // 'idDomba' : barcode.code,
+  //       'idDomba': sheep.id,
+  //       'namaDomba': sheep.sheepName,
+  //       'tanggalLahir': sheep.sheepBirth,
+  //       'jenisDomba': sheep.sheepGender,
+  //       });
+  //     } catch (e) {
+  //       print('Error fetching sheep data: $e');
+  //     }
+  //   });
+  // }
+
   void _onQRViewCreated(QRViewController controller) {
     this._controller = controller;
     controller.scannedDataStream.listen((Barcode barcode) async {
       await controller.pauseCamera();
       if (!mounted) return;
 
-      print('Scanned data: ${barcode.code}');
+      final String? scannedId = barcode.code;
+      print('Scanned data: $scannedId');
 
-      // Get.toNamed('/detaildomba', arguments: {
-      //   'idDomba': barcode.code, // Data yang dipindai dari barcode
-      //   // Tambahkan data lain yang dibutuhkan
-      // });
-       try {
-        Sheep sheep = await sheepService.fetchSheepById(barcode.code!);
-        Get.toNamed('/detaildomba', arguments: sheep);
-      } catch (e) {
-        print('Error fetching sheep data: $e');
-        // Tangani error di sini
+      if (scannedId != null && scannedId.isNotEmpty) {
+        try {
+          // Panggil API untuk mendapatkan data domba
+          Sheep sheep = await SheepService.fetchSheepById(scannedId);
+          // Navigasi ke halaman detail
+          Get.toNamed('/detail-sheep', arguments: sheep);
+        } catch (e) {
+          // Tampilkan pesan kesalahan jika ID tidak ditemukan
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Terjadi kesalahan: $e')),
+          );
+          await controller.resumeCamera();
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Kode QR tidak valid')),
+        );
+        await controller.resumeCamera();
       }
     });
   }
-  
+
   @override
   void dispose() {
     _controller?.dispose();
     super.dispose();
-    
-  } 
+  }
 }
