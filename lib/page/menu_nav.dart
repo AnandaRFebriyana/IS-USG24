@@ -58,7 +58,7 @@ class _MenuNavState extends State<MenuNav> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 _buildTabItem(0, Icons.home, 'Home'),
-                SizedBox(width: 3),
+                SizedBox(width: 30),
                 _buildTabItem(1, Icons.assessment, 'Assesment'),
                 SizedBox(width: 90),
                 _buildTabItem(2, Icons.health_and_safety, 'Vital Sign'),

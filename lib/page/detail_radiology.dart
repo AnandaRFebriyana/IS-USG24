@@ -63,17 +63,18 @@ class DetailRadiology extends StatelessWidget {
               const SizedBox(height: 20),
               _buildSectionTitle('Data Radiologi'),
               _buildCard([
-                radiologi.radiologiImage != null && radiologi.radiologiImage!.isNotEmpty
-                    ? Image.network(
-                        radiologi.radiologiImage!,
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Text('Gagal memuat gambar');
-                        },
-                      )
-                    : const Text('Gambar tidak tersedia'),
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: radiologi.radiologiImage != null && radiologi.radiologiImage!.isNotEmpty
+                      ? Image.network(
+                          'https://isusg-mbkm.research-ai.my.id/api/${radiologi.radiologiImage}',
+                          fit: BoxFit.cover,
+                        )
+                      : const Text('Gambar tidak tersedia'),
+                ),
                 const SizedBox(height: 10),
                 _buildDetailRow(
                   icon: Icons.info,
