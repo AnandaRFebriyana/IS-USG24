@@ -159,7 +159,7 @@ class _HomeState extends State<Home> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Get.toNamed('/datadomba');
+                    Get.toNamed('/sheep');
                   },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
@@ -224,7 +224,7 @@ class _HomeState extends State<Home> {
                               subtitle: Text(sheep.sheepName),
                               trailing: Icon(Icons.chevron_right),
                               onTap: () {
-                                Get.toNamed('/detaildomba', arguments: sheep);
+                                Get.toNamed('/detail-sheep', arguments: sheep);
                               },
                             ),
                           ),

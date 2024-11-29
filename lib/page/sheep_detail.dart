@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:barcode_widget/barcode_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:mobileapp/models/sheep_models.dart';
 
 class DetailDomba extends StatelessWidget {
@@ -8,11 +10,12 @@ class DetailDomba extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  String formattedDate = DateFormat('d MMMM yyyy').format(sheep.sheepBirth);
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Detail Data Domba',
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
@@ -39,7 +42,7 @@ class DetailDomba extends StatelessWidget {
               SizedBox(height: 20),
               _buildDetailField('Nama Domba', sheep.sheepName),
               SizedBox(height: 20),
-              _buildDetailField('Tanggal Lahir', sheep.sheepBirth),
+              _buildDetailField('Tanggal Lahir', formattedDate),
               SizedBox(height: 20),
               _buildDetailField('Jenis Kelamin', sheep.sheepGender),
               Spacer(),

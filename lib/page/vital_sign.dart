@@ -95,13 +95,12 @@ class VitalSign extends StatelessWidget {
                                 ),
                                 onPressed: () {
                                   print('Tombol grafik ditekan');
-                                  // Get.toNamed('/grafikvitalsign',
+                                  // Get.toNamed('/grafik-vitalsign',
                                   //     arguments: vitalSign);
                                 },
                               ),
                               onTap: () {
-                                Get.toNamed('/detailvitalsign',
-                                    arguments: vitalSign);
+                                Get.toNamed('/detail-vitalsign', arguments: vitalSign);
                               },
                             ),
                           ),

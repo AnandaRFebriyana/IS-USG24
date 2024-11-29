@@ -4,8 +4,6 @@ import 'package:mobileapp/models/sheep_models.dart';
 import 'package:mobileapp/services/constans.dart';
 
 class SheepService {
-  static const String apiUrl = 'https://isusg-mbkm.research-ai.my.id/sheep-api';
-
   static Future<List<Sheep>> getSheep() async {
     String? token = await Constant.getToken();
     final url = Uri.parse(Constant.GET_SHEEP);
@@ -26,7 +24,7 @@ class SheepService {
 
    Future<Sheep> fetchSheepById(String id) async {
     try {
-      final response = await http.get(Uri.parse('$apiUrl/$id'));
+      final response = await http.get(Uri.parse(Constant.GET_SHEEPBYID));
       if (response.statusCode == 200) {
         return Sheep.fromJson(json.decode(response.body));
       } else {
@@ -35,6 +33,35 @@ class SheepService {
     } catch (e) {
       print('Error fetching data: $e');
       throw Exception('Gagal memuat data');
+    }
+  }
+
+  static Future<void> postSheep(Sheep sheep) async {
+    try {
+      String? token = await Constant.getToken();
+      final url = Uri.parse(Constant.POST_SHEEP);
+      final request = http.MultipartRequest('POST', url);
+      request.headers['Authorization'] = 'Bearer $token';
+      request.headers['Accept'] = 'application/json';
+
+      request.fields['sheep_name'] = sheep.sheepName;
+      request.fields['sheep_birth'] = sheep.sheepBirth.toString();
+      request.fields['sheep_gender'] = sheep.sheepGender;
+      if (sheep.sheepPhoto != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('sheep_photo', sheep.sheepPhoto!.path),
+        );
+      }
+      final response = await request.send();
+
+      if (response.statusCode == 201) {
+        print('Successfully create sheep data.');
+      } else {
+        String errorMessage = await response.stream.bytesToString();
+        throw 'Failed to create report: $errorMessage';
+      }
+    } catch (e) {
+      print('Error: $e');
     }
   }
 }
