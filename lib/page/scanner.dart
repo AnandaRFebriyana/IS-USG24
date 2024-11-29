@@ -97,13 +97,7 @@ class _ScannerState extends State<Scanner> {
       // });
        try {
         Sheep sheep = await sheepService.fetchSheepById(barcode.code!);
-        Get.toNamed('/detaildomba', arguments: {
-          // 'idDomba' : barcode.code,
-        'idDomba': sheep.id,
-        'namaDomba': sheep.sheepName,
-        'tanggalLahir': sheep.sheepBirth,
-        'jenisDomba': sheep.sheepGender,
-        });
+        Get.toNamed('/detaildomba', arguments: sheep);
       } catch (e) {
         print('Error fetching sheep data: $e');
         // Tangani error di sini
@@ -111,14 +105,10 @@ class _ScannerState extends State<Scanner> {
     });
   }
   
-
-  
-
   @override
   void dispose() {
     _controller?.dispose();
     super.dispose();
     
-  }
-    
+  } 
 }
