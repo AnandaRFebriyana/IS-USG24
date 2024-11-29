@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:mobileapp/constans.dart';
 import 'package:mobileapp/models/radiologi_models.dart';
 import 'package:mobileapp/models/vital_sign_models.dart';
-import 'package:mobileapp/services/constans.dart';
 
 class RadiologiService {
 
