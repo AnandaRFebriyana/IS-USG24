@@ -54,7 +54,7 @@ class Radiology extends StatelessWidget {
                         Radiologi radiologi = radiologiList[index];
                         String formattesDate =
                             DateFormat('d MMMM yyyy, HH:mm:ss')
-                                .format(DateTime.parse(radiologi.sheepCreat));
+                                .format(DateTime.parse(radiologi.sheepCreated));
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 12.0),
                           child: Container(
@@ -63,7 +63,8 @@ class Radiology extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: ListTile(
-                              leading: Icon(Icons.medical_services, color: Colors.blue),
+                              leading: Icon(Icons.medical_services,
+                                  color: Colors.blue),
                               title: Text(
                                 '${radiologi.assesmentId} - ${radiologi.sheepName}', // assessment_id dan Nama Domba
                                 style: TextStyle(fontWeight: FontWeight.bold),
@@ -75,7 +76,9 @@ class Radiology extends StatelessWidget {
                                     'Status: ${radiologi.pregnancyStatus}',
                                     style: TextStyle(
                                       fontSize: 12,
-                                      color: radiologi.pregnancyStatus .toLowerCase() == 'Bun'
+                                      color: radiologi.pregnancyStatus
+                                                  .toLowerCase() ==
+                                              'Bun'
                                           ? Colors.green
                                           : Colors.red,
                                     ),

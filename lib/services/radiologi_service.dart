@@ -2,13 +2,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobileapp/constans.dart';
 import 'package:mobileapp/models/radiologi_models.dart';
-import 'package:mobileapp/models/vital_sign_models.dart';
 
 class RadiologiService {
-
   static Future<List<Radiologi>> getRadiologi() async {
     String? token = await Constant.getToken();
-    final url = Uri.parse(Constant.GET_VITAL);
+    final url = Uri.parse(Constant.GET_RADIOLOGY);
     final response = await http.get(
       url,
       headers: {'Authorization': 'Bearer $token'},

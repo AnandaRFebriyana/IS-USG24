@@ -8,7 +8,7 @@ class DetailRadiology extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate = DateFormat('d MMMM yyyy, HH:mm:ss').format(DateTime.parse(radiologi.sheepCreat));
+    String formattedDate = DateFormat('d MMMM yyyy, HH:mm:ss').format(DateTime.parse(radiologi.sheepCreated));
 
     return Scaffold(
       appBar: AppBar(
@@ -70,7 +70,7 @@ class DetailRadiology extends StatelessWidget {
                   ),
                   child: radiologi.radiologiImage != null && radiologi.radiologiImage!.isNotEmpty
                       ? Image.network(
-                          'https://isusg-mbkm.research-ai.my.id/api/${radiologi.radiologiImage}',
+                          'https://isusg-mbkm.research-ai.my.id/storage/${radiologi.radiologiImage}',
                           fit: BoxFit.cover,
                         )
                       : const Text('Gambar tidak tersedia'),
