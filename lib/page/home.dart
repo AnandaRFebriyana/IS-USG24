@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
       int male = 0;
       int female = 0;
       for (var sheep in sheepList) {
-        print('Sheep Gender: ${sheep.sheepGender}');
+        // print('Sheep Gender: ${sheep.sheepGender}');
         if (sheep.sheepGender == 'Betina') {
           female++;
         } else if (sheep.sheepGender == 'Jantan') {

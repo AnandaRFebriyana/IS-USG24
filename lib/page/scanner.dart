@@ -14,7 +14,6 @@ class _ScannerState extends State<Scanner> {
   bool _frontCam = false;
   GlobalKey _qrKey = GlobalKey();
   QRViewController? _controller;
-  final SheepService sheepService = SheepService();
 
   @override
   Widget build(BuildContext context) {
@@ -84,60 +83,19 @@ class _ScannerState extends State<Scanner> {
     );
   }
 
-  // void _onQRViewCreated(QRViewController controller) {
-  //   this._controller = controller;
-  //   controller.scannedDataStream.listen((Barcode barcode) async {
-  //     await controller.pauseCamera();
-  //     if (!mounted) return;
-
-  //     print('Scanned data: ${barcode.code}');
-
-  //     // Get.toNamed('/detail-sheep', arguments: {
-  //     //   'idDomba': barcode.code, // Data yang dipindai dari barcode
-  //     //   // Tambahkan data lain yang dibutuhkan
-  //     // });
-  //      try {
-  //       Sheep sheep = await sheepService.fetchSheepById(barcode.code!);
-  //       Get.toNamed('/detail-sheep', arguments: {
-  //         // 'idDomba' : barcode.code,
-  //       'idDomba': sheep.id,
-  //       'namaDomba': sheep.sheepName,
-  //       'tanggalLahir': sheep.sheepBirth,
-  //       'jenisDomba': sheep.sheepGender,
-  //       });
-  //     } catch (e) {
-  //       print('Error fetching sheep data: $e');
-  //     }
-  //   });
-  // }
-
   void _onQRViewCreated(QRViewController controller) {
-    this._controller = controller;
-    controller.scannedDataStream.listen((Barcode barcode) async {
-      await controller.pauseCamera();
-      if (!mounted) return;
+    setState(() {
+      _controller = controller;
+    });
+    controller.scannedDataStream.listen((scanData) async {
+      final String scannedId = scanData.code ?? 'Unknown ID';
+      print("Scanned ID: $scannedId");
 
-      final String? scannedId = barcode.code;
-      print('Scanned data: $scannedId');
-
-      if (scannedId != null && scannedId.isNotEmpty) {
-        try {
-          // Panggil API untuk mendapatkan data domba
-          Sheep sheep = await SheepService.fetchSheepById(scannedId);
-          // Navigasi ke halaman detail
-          Get.toNamed('/detail-sheep', arguments: sheep);
-        } catch (e) {
-          // Tampilkan pesan kesalahan jika ID tidak ditemukan
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Terjadi kesalahan: $e')),
-          );
-          await controller.resumeCamera();
-        }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Kode QR tidak valid')),
-        );
-        await controller.resumeCamera();
+      try {
+        Sheep sheep = await SheepService.fetchSheepById(scannedId);
+        Get.toNamed('/detail-sheep', arguments: sheep);
+      } catch (e) {
+        print("Error fetching sheep data: $e");
       }
     });
   }

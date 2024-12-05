@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mobileapp/models/sheep_models.dart';
+import 'package:mobileapp/page/menu_nav.dart';
 
 class DetailDomba extends StatelessWidget {
   final Sheep sheep = Get.arguments as Sheep;
@@ -21,6 +22,11 @@ class DetailDomba extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
+        leading: IconButton(onPressed: () {
+          Get.offAll(() => MenuNav());
+        },
+        icon: Icon(Icons.arrow_back),
+        ),
       ),
       body: Center(
         child: Padding(

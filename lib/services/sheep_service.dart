@@ -23,7 +23,7 @@ class SheepService {
   }
 
   static Future<Sheep> fetchSheepById(String id) async {
-    final url = Uri.parse(Constant.GET_SHEEPBYID);
+    final url = Uri.parse('${Constant.GET_SHEEP}/$id');
     final response = await http.get(
       url,
       headers: {'Authorization': 'Bearer ${await Constant.getToken()}'},
@@ -31,9 +31,11 @@ class SheepService {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> jsonResponse = json.decode(response.body);
-      return Sheep.fromJson(jsonResponse['data']);
-    } else if (response.statusCode == 404) {
-      throw Exception('Domba dengan ID $id tidak ditemukan');
+      if (jsonResponse['success'] == true) {
+        return Sheep.fromJson(jsonResponse['data']);
+      } else {
+        throw Exception('Domba dengan ID $id tidak ditemukan');
+      }
     } else {
       throw Exception('Gagal memuat data: ${response.statusCode}');
     }
