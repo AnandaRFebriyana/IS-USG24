@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:mobileapp/models/chart_models.dart';
 import 'package:mobileapp/services/vital_sign_service.dart';
 import 'package:mobileapp/models/vital_sign_models.dart';
 
@@ -94,9 +95,18 @@ class VitalSign extends StatelessWidget {
                                   color: Colors.deepOrange,
                                 ),
                                 onPressed: () {
+                                  List<ChartData> chartData = vitalSignsList.map((vitalSign) {
+                                    return ChartData(
+                                      createdAt: vitalSign.createdAt,
+                                      temperature: vitalSign.temperature,
+                                      heartRate: vitalSign.heartRate,
+                                      respiratoryRate: vitalSign.respiratoryRate,
+                                      weight: vitalSign.weight,
+                                    );
+                                  }).toList();
                                   print('Tombol grafik ditekan');
-                                  // Get.toNamed('/grafik-vitalsign',
-                                  //     arguments: vitalSign);
+                                  Get.toNamed('/grafik-vitalsign',
+                                      arguments: chartData);
                                 },
                               ),
                               onTap: () {

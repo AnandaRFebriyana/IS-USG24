@@ -1,57 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:mobileapp/models/chart_models.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-
-import 'package:mobileapp/models/vital_sign_models.dart';
 
 class VitalSignGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Mendapatkan data yang dikirim melalui routing
-    final List<VitalSigns> vitalSignsList = Get.arguments ?? [];
+    // Ambil data dari arguments
+    final List<ChartData> chartData = Get.arguments ?? [];
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Grafik Perkembangan Kesehatan'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: SfCartesianChart(
-                primaryXAxis: DateTimeAxis(
-                  dateFormat: DateFormat('dd/MM/yyyy'), // Format tanggal
-                  intervalType: DateTimeIntervalType.days,
-                  interval: 1,
-                ),
-                title: ChartTitle(text: 'Perkembangan Kesehatan Domba'),
-                legend: Legend(isVisible: true),
-                tooltipBehavior: TooltipBehavior(enable: true),
-                series: <ChartSeries>[
-                  // Grafik Suhu Tubuh
-                  LineSeries<VitalSigns, DateTime>(
-                    dataSource: vitalSignsList,
-                    xValueMapper: (VitalSigns data, _) => data.createdAt,
-                    yValueMapper: (VitalSigns data, _) => data.temperature,
-                    name: 'Suhu Tubuh',
-                    color: Colors.blue,
-                  ),
-                  // Grafik Denyut Jantung
-                  LineSeries<VitalSigns, DateTime>(
-                    dataSource: vitalSignsList,
-                    xValueMapper: (VitalSigns data, _) => data.createdAt,
-                    yValueMapper: (VitalSigns data, _) => data.heartRate,
-                    name: 'Denyut Jantung',
-                    color: Colors.red,
-                  ),
-                ],
+      body: Center(
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.9,
+          height: MediaQuery.of(context).size.height * 0.5,
+          child: SfCartesianChart(
+            plotAreaBorderWidth: 0,
+            title: ChartTitle(text: 'Grafik Vital Signs'),
+            legend: Legend(
+              isVisible: true,
+              position: LegendPosition.bottom,
+              overflowMode: LegendItemOverflowMode.wrap,
+              textStyle: TextStyle(fontSize: 10),
               ),
+            trackballBehavior: TrackballBehavior(
+              enable: true,
+              activationMode: ActivationMode.singleTap,
             ),
-          ],
+            primaryXAxis: DateTimeAxis(
+              title: AxisTitle(text: 'Tanggal'),
+              intervalType: DateTimeIntervalType.days,
+              majorGridLines: MajorGridLines(width: 0),
+            ),
+            primaryYAxis: NumericAxis(
+              title: AxisTitle(text: 'Nilai'),
+              axisLine: AxisLine(width: 0),
+              majorTickLines: MajorTickLines(size: 0),
+            ),
+            series: _getStackedLineSeries(chartData),
+          ),
         ),
       ),
     );
+  }
+
+  /// Mengembalikan data series untuk Stacked Line Chart
+  List<StackedLineSeries<ChartData, DateTime>> _getStackedLineSeries(
+      List<ChartData> chartData) {
+    return <StackedLineSeries<ChartData, DateTime>>[
+      StackedLineSeries<ChartData, DateTime>(
+        dataSource: chartData,
+        xValueMapper: (ChartData data, _) => data.createdAt,
+        yValueMapper: (ChartData data, _) => data.temperature,
+        name: 'Suhu Tubuh',
+        markerSettings: MarkerSettings(isVisible: true),
+        color: Colors.blue,
+      ),
+      StackedLineSeries<ChartData, DateTime>(
+        dataSource: chartData,
+        xValueMapper: (ChartData data, _) => data.createdAt,
+        yValueMapper: (ChartData data, _) => data.heartRate,
+        name: 'Denyut Jantung',
+        markerSettings: MarkerSettings(isVisible: true),
+        color: Colors.red,
+      ),
+      StackedLineSeries<ChartData, DateTime>(
+        dataSource: chartData,
+        xValueMapper: (ChartData data, _) => data.createdAt,
+        yValueMapper: (ChartData data, _) => data.respiratoryRate,
+        name: 'Laju Pernapasan',
+        markerSettings: MarkerSettings(isVisible: true),
+        color: Colors.green,
+      ),
+      StackedLineSeries<ChartData, DateTime>(
+        dataSource: chartData,
+        xValueMapper: (ChartData data, _) => data.createdAt,
+        yValueMapper: (ChartData data, _) => data.weight,
+        name: 'Berat Badan',
+        markerSettings: MarkerSettings(isVisible: true),
+        color: Colors.purple,
+      ),
+    ];
   }
 }
